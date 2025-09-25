@@ -213,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: Image.asset('lib/assets/anil_resume.png'),
+            child: Image.asset('lib/assets/anil.png'),
           ),
         ),
         SizedBox(height: 20),

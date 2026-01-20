@@ -205,15 +205,15 @@ class _MyHomePageState extends State<MyHomePage> {
         // Profile Image
         Container(
           padding: EdgeInsets.all(6),
-          height: 200,
-          width: 200,
+          height: MediaQuery.of(context).size.height * 0.2,
+          width: MediaQuery.of(context).size.width * 0.2,
           decoration: BoxDecoration(
             color: color.surface,
             borderRadius: BorderRadius.circular(20),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: Image.asset('lib/assets/anil.png'),
+            child: Image.asset('lib/assets/anil.png', fit: BoxFit.fitWidth),
           ),
         ),
         SizedBox(height: 20),

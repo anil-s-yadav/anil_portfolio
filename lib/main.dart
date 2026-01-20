@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Anil yadav',
       theme:
           brightness == Brightness.light
               ? theme.lightMediumContrast()

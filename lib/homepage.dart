@@ -1,3 +1,4 @@
+import 'package:anil_portfolio/all_projects_page.dart';
 import 'package:anil_portfolio/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
@@ -247,10 +248,10 @@ class _MyHomePageState extends State<MyHomePage> {
       children: [
         // Profile Image
         Container(
-          padding: EdgeInsets.all(6),
+          padding: EdgeInsets.all(5),
           margin: EdgeInsets.symmetric(horizontal: 20),
-          height: MediaQuery.of(context).size.height * 0.2,
-          width: MediaQuery.of(context).size.width * 0.2,
+          height: MediaQuery.of(context).size.width * 0.5,
+          width: MediaQuery.of(context).size.width * 0.5,
           decoration: BoxDecoration(
             color: color.surface,
             borderRadius: BorderRadius.circular(20),
@@ -337,58 +338,60 @@ class _MyHomePageState extends State<MyHomePage> {
         SizedBox(width: isTablet ? 20 : 30),
         Expanded(
           flex: 2,
-          child: Container(
-            height: isTablet ? 250 : 300,
-            padding: EdgeInsets.all(isTablet ? 15 : 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Anil S. Yadav",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: isTablet ? 19 : 22,
-                    color: color.onSurface,
+          child: SelectionArea(
+            child: Container(
+              height: isTablet ? 250 : 300,
+              padding: EdgeInsets.all(isTablet ? 15 : 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Anil S. Yadav",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: isTablet ? 19 : 22,
+                      color: color.onSurface,
+                    ),
                   ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Hello, my name is Anil Yadav,",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: isTablet ? 14 : 16,
-                    color: color.onSurface,
+                  SizedBox(height: 10),
+                  Text(
+                    "Hello, my name is Anil Yadav,",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: isTablet ? 14 : 16,
+                      color: color.onSurface,
+                    ),
                   ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "A passionate Flutter developer with over 1 year of experience building beautiful, high-performance mobile apps. I’ve successfully developed and deployed multiple cross-platform applications for diverse domains including news, e-commerce, and productivity. My focus is on writing clean, maintainable code and delivering pixel-perfect UI with smooth user experiences. I’m proficient in Firebase, REST APIs, third-party integrations, and state management solutions like Provider and BLoC. I take pride in turning ideas into full-fledged apps from scratch. Looking forward to helping you build your next great app!",
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    // height: 1.6,
-                    color: color.onSurfaceVariant,
-                    fontSize: isTablet ? 13 : 14,
+                  SizedBox(height: 10),
+                  Text(
+                    "A passionate Flutter developer with over 1 year of experience building beautiful, high-performance mobile apps. I’ve successfully developed and deployed multiple cross-platform applications for diverse domains including news, e-commerce, and productivity. My focus is on writing clean, maintainable code and delivering pixel-perfect UI with smooth user experiences. I’m proficient in Firebase, REST APIs, third-party integrations, and state management solutions like Provider and BLoC. I take pride in turning ideas into full-fledged apps from scratch. Looking forward to helping you build your next great app!",
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      // height: 1.6,
+                      color: color.onSurfaceVariant,
+                      fontSize: isTablet ? 13 : 14,
+                    ),
                   ),
-                ),
-                Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children:
-                      logo
-                          .map(
-                            (l) => IconButton(
-                              onPressed: () => _launchUrl(l['url']),
-                              icon: Image.asset(
-                                l['logo'],
-                                height: 26,
-                                width: 26,
+                  Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:
+                        logo
+                            .map(
+                              (l) => IconButton(
+                                onPressed: () => _launchUrl(l['url']),
+                                icon: Image.asset(
+                                  l['logo'],
+                                  height: 26,
+                                  width: 26,
+                                ),
                               ),
-                            ),
-                          )
-                          .toList(),
-                ),
-              ],
+                            )
+                            .toList(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -434,7 +437,13 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Spacer(),
               TextButton(
-                onPressed: () {},
+                onPressed:
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AllProjectsPage(),
+                      ),
+                    ),
                 child: Text(
                   "View All Projects >",
                   style: TextStyle(
@@ -701,116 +710,203 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildContactSection(ColorScheme color) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth <= 600;
-    final isTablet = screenWidth > 600 && screenWidth <= 768;
+    final width = MediaQuery.of(context).size.width;
+    final isMobile = width < 700;
 
     return Container(
       key: sectionKeys['contactKey'],
-      // height: double.maxFinite,
-      // width:
-      //     isMobile
-      //         ? double.infinity
-      //         : (isTablet ? screenWidth * 0.7 : screenWidth * 0.5),
-      padding: EdgeInsets.all(20),
-      margin: EdgeInsets.only(top: 20),
-      // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-      decoration: BoxDecoration(
-        color: color.surfaceContainer,
-        // borderRadius: BorderRadius.circular(20),
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: color.shadow.withAlpha(50),
-        //     blurRadius: 15,
-        //     offset: Offset(0, 8),
-        //   ),
-        // ],
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      margin: const EdgeInsets.only(top: 40),
+      decoration: BoxDecoration(color: color.surfaceContainer),
       child: Column(
         children: [
-          Row(
+          // Top content
+          Flex(
+            direction: isMobile ? Axis.vertical : Axis.horizontal,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.contact_mail, color: color.tertiary, size: 20),
-              SizedBox(width: 10),
-              Text(
-                "Contact Me",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: color.onSurface,
+              // LEFT — CONTACTS
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.contact_mail,
+                          size: 16,
+                          color: color.tertiary,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "Contact",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: color.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Wrap(
+                      // spacing: 8,
+                      children: [
+                        ...logo.map(
+                          (l) => IconButton(
+                            tooltip: l['name'],
+                            onPressed: () => _launchUrl(l['url']),
+                            icon: Image.asset(l['logo'], height: 22),
+                          ),
+                        ),
+                        _contactIcon(
+                          Icons.email,
+                          Colors.red,
+                          () => _launchUrl("mailto:anilyadav44x@gmail.com"),
+                        ),
+                        _contactIcon(
+                          Icons.phone,
+                          Colors.green,
+                          () => _launchUrl("tel:+919892986314"),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              if (!isMobile)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: VerticalDivider(
+                    color: color.outlineVariant,
+                    thickness: 1,
+                  ),
+                ),
+
+              // RIGHT — SERVICES
+              Expanded(
+                // flex: ,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _sectionTitle(
+                      icon: Icons.work_outline,
+                      title: "Freelancing Services",
+                      color: color,
+                    ),
+                    const SizedBox(height: 12),
+                    _serviceItem("Flutter Mobile & Web Apps"),
+                    _serviceItem("UI/UX Design"),
+                    _serviceItem("Firebase Backend"),
+                    _serviceItem("App Performance Optimization"),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _sectionTitle(title: "", color: color),
+                    const SizedBox(height: 12),
+                    _serviceItem("Flutter Mobile & Web Apps"),
+                    _serviceItem("UI/UX Design"),
+                    _serviceItem("Firebase Backend"),
+                    _serviceItem("App Performance Optimization"),
+                  ],
                 ),
               ),
             ],
           ),
 
-          SizedBox(height: 5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ...logo.map(
-                (l) => IconButton(
-                  onPressed: () => _launchUrl(l['url']),
-                  icon: Image.asset(l['logo'], height: 22, width: 22),
-                ),
-              ),
-              _buildContactItem(
-                Icons.email,
-                Colors.red,
-                () => _launchUrl("mailto:anilyadav44x@gmail.com"),
-              ),
-              _buildContactItem(
-                Icons.phone,
-                Colors.green.shade600,
-                () => _launchUrl("tel:+919892986314"),
-              ),
-            ],
+          // const SizedBox(height: 30),
+          Divider(
+            color: color.surfaceContainerLowest,
+            height: 50,
+            indent: 50,
+            endIndent: 30,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            child: Text(
-              "• Freelancing work available, contact for best deals!",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.green),
-            ),
-          ),
-          // SizedBox(height: 10),
-          Row(
-            spacing: 20,
+
+          // FOOTER
+          // const SizedBox(height: 10),
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 10,
             children: [
               Text(
-                "Copyright © Legendary Software",
-                style: TextStyle(color: color.secondaryFixedDim, fontSize: 11),
+                "© Legendary Software",
+                style: TextStyle(color: color.onSurfaceVariant, fontSize: 11),
               ),
               Text(
-                "owned by - Anil S. yadav",
+                "• Anil Yadav",
                 style: TextStyle(
-                  color: color.secondaryFixedDim.withAlpha(180),
-                  fontSize: 10,
+                  color: color.onSurfaceVariant.withAlpha(160),
+                  fontSize: 11,
                 ),
               ),
               GestureDetector(
-                onTap:
-                    () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => LoginPage()),
+                  );
+                },
                 child: Text(
-                  "Am I admin?",
-                  textAlign: TextAlign.center,
+                  "Admin",
                   style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w100,
+                    color: color.primary,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
             ],
           ),
-          // if (isMobile) SizedBox(height: 20),
         ],
       ),
     );
+  }
+
+  Widget _sectionTitle({
+    IconData? icon,
+    required String title,
+    required ColorScheme color,
+  }) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: color.tertiary),
+        const SizedBox(width: 8),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: color.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _serviceItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          const Icon(Icons.check_circle, size: 16, color: Colors.green),
+          const SizedBox(width: 8),
+          Expanded(child: Text(text, style: TextStyle(fontSize: 11))),
+        ],
+      ),
+    );
+  }
+
+  Widget _contactIcon(IconData icon, Color color, VoidCallback onTap) {
+    return IconButton(onPressed: onTap, icon: Icon(icon, color: color));
   }
 
   Widget _buildTimelineItem(

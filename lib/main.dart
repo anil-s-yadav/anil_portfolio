@@ -1,9 +1,13 @@
+import 'package:anil_portfolio/firebase_options.dart';
 import 'package:anil_portfolio/homepage.dart';
 import 'package:anil_portfolio/theme/theme.dart';
 import 'package:anil_portfolio/theme/util.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 

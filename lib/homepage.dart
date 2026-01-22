@@ -1,3 +1,4 @@
+import 'package:anil_portfolio/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,6 +24,27 @@ class _MyHomePageState extends State<MyHomePage> {
     {"logo": "lib/assets/whatsapp.png", "url": "https://wa.me/+919892986314/"},
   ];
 
+  final Map<String, GlobalKey> sectionKeys = {
+    'homeKey': GlobalKey(),
+    'skillsKey': GlobalKey(),
+    'projectsKey': GlobalKey(),
+    'experienceKey': GlobalKey(),
+    'EducationKey': GlobalKey(),
+
+    'contactKey': GlobalKey(),
+  };
+
+  void scrollTo(String section) {
+    final context = sectionKeys[section]?.currentContext;
+    if (context != null) {
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ColorScheme color = Theme.of(context).colorScheme;
@@ -38,25 +60,30 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
-        padding:
-            isDesktop
-                ? const EdgeInsets.symmetric(horizontal: 80, vertical: 10)
-                : const EdgeInsets.all(10),
+        // padding:
+        //     isDesktop
+        //         ? const EdgeInsets.symmetric(horizontal: 80, vertical: 10)
+        //         : const EdgeInsets.all(10),
         child: Column(
           children: [
             _buildHeroSection(color),
-            SizedBox(height: 30),
-
+            // SizedBox(height: 30),
+            _buildSkillsSection(color),
+            _buildProjectsSection(color),
+            // SizedBox(height: 30),
             // Responsive Experience and Education Layout
             if (isDesktop)
               // Desktop: Side by side
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(child: _buildExperienceSection(color)),
-                  SizedBox(width: 20),
-                  Expanded(child: _buildEducationSection(color)),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 20,
+                  children: [
+                    Expanded(flex: 3, child: _buildExperienceSection(color)),
+                    Expanded(flex: 2, child: _buildEducationSection(color)),
+                  ],
+                ),
               )
             else
               // Mobile/Tablet: Stacked
@@ -68,30 +95,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
 
-            SizedBox(height: 30),
-            _buildProjectsSection(color),
-            SizedBox(height: 10),
+            // SizedBox(height: 50),
+            // Divider(),
             _buildContactSection(color),
-            SizedBox(height: 10),
-            Column(
-              children: [
-                Text(
-                  "Copyright © Legendary Software",
-                  style: TextStyle(
-                    color: color.secondaryFixedDim,
-                    fontSize: 13,
-                  ),
-                ),
-                Text(
-                  "owned by - Anil S. yadav",
-                  style: TextStyle(
-                    color: color.secondaryFixedDim.withAlpha(180),
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 50),
           ],
         ),
       ),
@@ -119,6 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             "Anil S. Yadav",
@@ -128,7 +135,41 @@ class _MyHomePageState extends State<MyHomePage> {
               fontSize: isMobile ? 14 : 16,
             ),
           ),
-          Spacer(),
+          Row(
+            spacing: 20,
+            // mainAxisSize: MainAxisSize.max,
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              InkWell(
+                onTap: () => scrollTo("homeKey"),
+                child: Text("Home", style: TextStyle(fontSize: 11)),
+              ),
+              InkWell(
+                onTap: () => scrollTo("skillsKey"),
+                child: Text("Skills", style: TextStyle(fontSize: 11)),
+              ),
+              InkWell(
+                onTap: () => scrollTo("projectsKey"),
+                child: Text("Projects", style: TextStyle(fontSize: 11)),
+              ),
+              InkWell(
+                onTap: () => scrollTo("experienceKey"),
+                child: Text(
+                  "Experience & Education",
+                  style: TextStyle(fontSize: 11),
+                ),
+              ),
+              // InkWell(
+              //   onTap: () => scrollTo("EducationKey"),
+              //   child: Text("Education", style: TextStyle(fontSize: 11)),
+              // ),
+              InkWell(
+                onTap: () => scrollTo("contactKey"),
+                child: Text("Contact me", style: TextStyle(fontSize: 11)),
+              ),
+            ],
+          ),
+          // Spacer(),
           // if (!isMobile) ...[
           //   _buildNavItem("About me", color),
           //   SizedBox(width: 20),
@@ -179,8 +220,10 @@ class _MyHomePageState extends State<MyHomePage> {
     final isTablet = screenWidth > 600 && screenWidth <= 768;
 
     return Container(
+      key: sectionKeys['homeKey'],
       width: double.infinity,
       padding: EdgeInsets.all(isMobile ? 15 : 20),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
         color: color.surfaceContainer,
         borderRadius: BorderRadius.circular(20),
@@ -205,6 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // Profile Image
         Container(
           padding: EdgeInsets.all(6),
+          margin: EdgeInsets.symmetric(horizontal: 20),
           height: MediaQuery.of(context).size.height * 0.2,
           width: MediaQuery.of(context).size.width * 0.2,
           decoration: BoxDecoration(
@@ -225,7 +269,7 @@ class _MyHomePageState extends State<MyHomePage> {
               "Anil S. Yadav",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: 18,
                 color: color.onSurface,
               ),
             ),
@@ -238,7 +282,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: color.onSurface,
               ),
             ),
-            SizedBox(height: 10),
+            // SizedBox(height: 10),
             Text(
               "A passionate Flutter developer with over 1 year of experience building beautiful, high-performance mobile apps. I’ve successfully developed and deployed multiple cross-platform applications for diverse domains including news, e-commerce, and productivity. My focus is on writing clean, maintainable code and delivering pixel-perfect UI with smooth user experiences. I’m proficient in Firebase, REST APIs, third-party integrations, and state management solutions like Provider and BLoC. I take pride in turning ideas into full-fledged apps from scratch. Looking forward to helping you build your next great app!",
               textAlign: TextAlign.justify,
@@ -276,6 +320,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Flexible(
           flex: 1,
           child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 20),
             padding: EdgeInsets.all(6),
             height: isTablet ? 250 : 300,
             width: isTablet ? 250 : 300,
@@ -303,7 +348,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   "Anil S. Yadav",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: isTablet ? 20 : 24,
+                    fontSize: isTablet ? 19 : 22,
                     color: color.onSurface,
                   ),
                 ),
@@ -318,10 +363,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  "and I believe that focusing on your company's data security plan is essential to growing your company's business. With over 10 years of experience in information and data security, my knowledge and skills can help you create effective security strategies. My dedication to creating comprehensive data security plans can also help your company improve its data integrity and increase customer retention.",
+                  "A passionate Flutter developer with over 1 year of experience building beautiful, high-performance mobile apps. I’ve successfully developed and deployed multiple cross-platform applications for diverse domains including news, e-commerce, and productivity. My focus is on writing clean, maintainable code and delivering pixel-perfect UI with smooth user experiences. I’m proficient in Firebase, REST APIs, third-party integrations, and state management solutions like Provider and BLoC. I take pride in turning ideas into full-fledged apps from scratch. Looking forward to helping you build your next great app!",
                   style: TextStyle(
                     fontWeight: FontWeight.normal,
-                    height: 1.6,
+                    // height: 1.6,
                     color: color.onSurfaceVariant,
                     fontSize: isTablet ? 13 : 14,
                   ),
@@ -351,134 +396,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _buildExperienceSection(ColorScheme color) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isDesktop = screenWidth > 768;
-
-    return Container(
-      width: isDesktop ? null : double.infinity,
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: color.surfaceContainer,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: color.shadow.withAlpha(50),
-            blurRadius: 15,
-            offset: Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.work, color: color.tertiary, size: 24),
-              SizedBox(width: 10),
-              Text(
-                "Experience",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: color.onSurface,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-          _buildTimelineItem(
-            " Flutter Developer   ",
-            " Kaamwalibais – Mumbai, India",
-            "Dec 2024 - Present",
-            "•  Developed and maintained a custom Flutter-based application for the company.\n• Contributed to 24-hour maid services and IT service solutions through app development.",
-            color,
-            true,
-          ),
-          _buildTimelineItem(
-            "Android Developer (Java,Kotlin)",
-            "Prodigy InfoTech · Internship",
-            "Jan 2024 - March 2024",
-            "• Contribute in componies app development projects.",
-            color,
-            false,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEducationSection(ColorScheme color) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isDesktop = screenWidth > 768;
-
-    return Container(
-      width: isDesktop ? null : double.infinity,
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: color.surfaceContainer,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: color.shadow.withAlpha(50),
-            blurRadius: 15,
-            offset: Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.school, color: color.tertiary, size: 24),
-              SizedBox(width: 10),
-              Text(
-                "Education",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: color.onSurface,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-          _buildTimelineItem(
-            " B.Sc. - Information Technology",
-            " Bunts sangha S. M. Shetty college, Powai",
-            "2021 - 2024",
-            "CGPA - 8.10",
-            color,
-            true,
-          ),
-          _buildTimelineItem(
-            "HSC - 12th Science",
-            "Ramniranjan Jhunjhunwala collage, Ghatkoper.",
-            "2019 - 2021",
-            "Marks - 78.67%",
-            color,
-            false,
-          ),
-          _buildTimelineItem(
-            "SSC- 10th",
-            " Hindi High School, Ghatkoper.",
-            "Compleated in 2019",
-            "Marks - 84.45%",
-            color,
-            false,
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildProjectsSection(ColorScheme color) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth <= 600;
     // final isTablet = screenWidth > 600 && screenWidth <= 768;
 
     return Container(
+      key: sectionKeys['projectsKey'],
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 30),
       width: double.infinity,
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -502,61 +427,92 @@ class _MyHomePageState extends State<MyHomePage> {
               Text(
                 "Projects",
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: color.onSurface,
+                ),
+              ),
+              Spacer(),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  "View All Projects >",
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.blue,
+                  ),
                 ),
               ),
             ],
           ),
           SizedBox(height: 20),
 
-          Wrap(
-            spacing: 15,
-            runSpacing: 15,
-            children: [
-              _buildProjectCard(
-                "Stream24 Short News & Live Tv",
-                "\nStream24 is a smart news and live TV app offering real-time updates, personalized news, and trending reels. Watch live channels, read AI-powered news summaries, and stay informed anytime, anywhere.",
-                [
-                  "Flutter",
-                  "Dart",
-                  "Python",
-                  "Fast Api",
-                  "Firebase",
-                  "summary AI Model",
-                ],
-                color,
-                "https://raw.githubusercontent.com/anil-s-yadav/stream24news_crm/refs/heads/main/lib/assets/news_app_logos/aboutus_logo.png",
-                "https://play.google.com/store/apps/details?id=com.legendarysoftware.stream24news&pcampaignid=web_share",
-              ),
-              _buildProjectCard(
-                "WhatsApp Media Manager",
-                "\nAn all-in-one app to manage WhatsApp media including photos, PDFs, videos, and more. Easily view, organize, and download both hidden and regular files with a clean, user-friendly interface.",
-                ["Flutter", "Dart", "Native Channels"],
-                color,
-                "https://raw.githubusercontent.com/anil-s-yadav/WhatsApp-Media-Manager/refs/heads/main/lib/images/logo.png",
-                "https://play.google.com/store/apps/details?id=com.legendarysoftware.stream24news&pcampaignid=web_share",
-              ),
-            ],
+          Center(
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              runAlignment: WrapAlignment.center,
+              spacing: 15,
+              runSpacing: 15,
+              children: [
+                _buildProjectCard(
+                  "Stream24 Short News & Live Tv",
+                  "Stream24 is a smart news and live TV app offering real-time updates, personalized news, and trending reels. Watch live channels, read AI-powered news summaries, and stay informed anytime, anywhere.",
+                  // [
+                  //   "Flutter",
+                  //   "Dart",
+                  //   "Python",
+                  //   "Fast Api",
+                  //   "Firebase",
+                  //   "summary AI Model",
+                  // ],
+                  color,
+                  "https://raw.githubusercontent.com/anil-s-yadav/stream24news_crm/refs/heads/main/lib/assets/news_app_logos/aboutus_logo.png",
+                  "https://play.google.com/store/apps/details?id=com.legendarysoftware.stream24news&pcampaignid=web_share",
+                ),
+                _buildProjectCard(
+                  "WhatsApp Media Manager",
+                  "An all-in-one app to manage WhatsApp media including photos, PDFs, videos, and more. Easily view, organize, and download both hidden and regular files with a clean, user-friendly interface.",
+                  // ["Flutter", "Dart", "Native Channels"],
+                  color,
+                  "https://raw.githubusercontent.com/anil-s-yadav/WhatsApp-Media-Manager/refs/heads/main/lib/images/logo.png",
+                  "https://play.google.com/store/apps/details?id=com.legendarysoftware.stream24news&pcampaignid=web_share",
+                ),
+                _buildProjectCard(
+                  "WhatsApp Media Manager",
+                  "An all-in-one app to manage WhatsApp media including photos, PDFs, videos, and more. Easily view, organize, and download both hidden and regular files with a clean, user-friendly interface.",
+                  // ["Flutter", "Dart", "Native Channels"],
+                  color,
+                  "https://raw.githubusercontent.com/anil-s-yadav/WhatsApp-Media-Manager/refs/heads/main/lib/images/logo.png",
+                  "https://play.google.com/store/apps/details?id=com.legendarysoftware.stream24news&pcampaignid=web_share",
+                ),
+                _buildProjectCard(
+                  "WhatsApp Media Manager",
+                  "An all-in-one app to manage WhatsApp media including photos, PDFs, videos, and more. Easily view, organize, and download both hidden and regular files with a clean, user-friendly interface.",
+                  // ["Flutter", "Dart", "Native Channels"],
+                  color,
+                  "https://raw.githubusercontent.com/anil-s-yadav/WhatsApp-Media-Manager/refs/heads/main/lib/images/logo.png",
+                  "https://play.google.com/store/apps/details?id=com.legendarysoftware.stream24news&pcampaignid=web_share",
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildContactSection(ColorScheme color) {
+  Widget _buildSkillsSection(ColorScheme color) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth <= 600;
-    final isTablet = screenWidth > 600 && screenWidth <= 768;
+    // final isTablet = screenWidth > 600 && screenWidth <= 768;
 
     return Container(
-      width:
-          isMobile
-              ? double.infinity
-              : (isTablet ? screenWidth * 0.7 : screenWidth * 0.5),
+      // height: 100, //testing delete later
+      key: sectionKeys['skillsKey'],
+      margin: EdgeInsets.symmetric(horizontal: 40),
+      width: double.infinity,
       padding: EdgeInsets.all(20),
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
       decoration: BoxDecoration(
         color: color.surfaceContainer,
         borderRadius: BorderRadius.circular(20),
@@ -569,16 +525,218 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.computer_rounded, color: color.tertiary, size: 22),
+              SizedBox(width: 10),
+              Text(
+                "Skills",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: color.onSurface,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          Wrap(
+            runSpacing: 20,
+            spacing: 20,
+            children: [
+              Text("Flutter"),
+              Text("Flutter"),
+              Text("Flutter"),
+              Text("Flutter"),
+              Text("Flutter"),
+              Text("Flutter"),
+              Text("Flutter"),
+              Text("Flutter"),
+              Text("Flutter"),
+              Text("Flutter"),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildExperienceSection(ColorScheme color) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth > 768;
+
+    return Container(
+      key: sectionKeys['experienceKey'],
+      width: isDesktop ? null : double.infinity,
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: color.surfaceContainer,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: color.shadow.withAlpha(50),
+            blurRadius: 15,
+            offset: Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.work, color: color.tertiary, size: 23),
+              SizedBox(width: 10),
+              Text(
+                "Experience",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: color.onSurface,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          _buildTimelineItem(
+            " V-Trans India – Mumbai, India",
+            " Flutter Developer   ",
+            "Jan 2026 - Present",
+            "•  Developed and maintained a custom Flutter-based application for the company.\n• Contributed to 24-hour maid services and IT service solutions through app development.",
+            color,
+            true,
+          ),
+          _buildTimelineItem(
+            " Kaamwalibais – Mumbai, India",
+            " Flutter Developer   ",
+
+            "Dec 2024 - Dec 2025",
+            "•  Developed and maintained a custom Flutter-based application for the company.\n• Contributed to 24-hour maid services and IT service solutions through app development.",
+            color,
+            false,
+          ),
+          _buildTimelineItem(
+            "Prodigy InfoTech · Internship",
+            "Android Developer (Java,Kotlin)",
+
+            "Jan 2024 - March 2024",
+            "• Contribute in componies app development projects.",
+            color,
+            false,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEducationSection(ColorScheme color) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth > 768;
+
+    return Container(
+      key: sectionKeys['EducationKey'],
+      width: isDesktop ? null : double.infinity,
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: color.surfaceContainer,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: color.shadow.withAlpha(50),
+            blurRadius: 15,
+            offset: Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.school, color: color.tertiary, size: 24),
+              SizedBox(width: 10),
+              Text(
+                "Education",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: color.onSurface,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          _buildTimelineItem(
+            " B.Sc. - Information Technology",
+            " Bunts sangha S. M. Shetty college, Powai",
+            "2021 - 2024",
+            "CGPA - 8.10",
+            color,
+            true,
+            isEdu: true,
+          ),
+          _buildTimelineItem(
+            "HSC - 12th Science",
+            "Ramniranjan Jhunjhunwala collage, Ghatkoper.",
+            "2019 - 2021",
+            "Marks - 78.67%",
+            color,
+            false,
+            isEdu: true,
+          ),
+          _buildTimelineItem(
+            "SSC- 10th",
+            " Hindi High School, Ghatkoper.",
+            "Compleated in 2019",
+            "Marks - 84.45%",
+            color,
+            false,
+            isEdu: true,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContactSection(ColorScheme color) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth <= 600;
+    final isTablet = screenWidth > 600 && screenWidth <= 768;
+
+    return Container(
+      key: sectionKeys['contactKey'],
+      // height: double.maxFinite,
+      // width:
+      //     isMobile
+      //         ? double.infinity
+      //         : (isTablet ? screenWidth * 0.7 : screenWidth * 0.5),
+      padding: EdgeInsets.all(20),
+      margin: EdgeInsets.only(top: 20),
+      // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+      decoration: BoxDecoration(
+        color: color.surfaceContainer,
+        // borderRadius: BorderRadius.circular(20),
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: color.shadow.withAlpha(50),
+        //     blurRadius: 15,
+        //     offset: Offset(0, 8),
+        //   ),
+        // ],
+      ),
+      child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.contact_mail, color: color.tertiary, size: 24),
+              Icon(Icons.contact_mail, color: color.tertiary, size: 20),
               SizedBox(width: 10),
               Text(
                 "Contact Me",
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: color.onSurface,
                 ),
@@ -586,14 +744,14 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
 
-          SizedBox(height: 20),
+          SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ...logo.map(
                 (l) => IconButton(
                   onPressed: () => _launchUrl(l['url']),
-                  icon: Image.asset(l['logo'], height: 24, width: 24),
+                  icon: Image.asset(l['logo'], height: 22, width: 22),
                 ),
               ),
               _buildContactItem(
@@ -609,14 +767,46 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: Text(
               "• Freelancing work available, contact for best deals!",
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.green),
             ),
           ),
-
+          // SizedBox(height: 10),
+          Row(
+            spacing: 20,
+            children: [
+              Text(
+                "Copyright © Legendary Software",
+                style: TextStyle(color: color.secondaryFixedDim, fontSize: 11),
+              ),
+              Text(
+                "owned by - Anil S. yadav",
+                style: TextStyle(
+                  color: color.secondaryFixedDim.withAlpha(180),
+                  fontSize: 10,
+                ),
+              ),
+              GestureDetector(
+                onTap:
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    ),
+                child: Text(
+                  "Am I admin?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w100,
+                  ),
+                ),
+              ),
+            ],
+          ),
           // if (isMobile) SizedBox(height: 20),
         ],
       ),
@@ -624,22 +814,26 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildTimelineItem(
-    String title,
     String company,
+    String title,
     String period,
     String description,
     ColorScheme color,
-    bool isFirst,
-  ) {
+    bool isLast, {
+    bool isEdu = false,
+  }) {
     return TimelineTile(
       alignment: TimelineAlign.manual,
-      lineXY: 0.2,
+      lineXY: 0.0,
 
-      isFirst: isFirst,
+      isFirst: isLast,
       indicatorStyle: IndicatorStyle(
         width: 20,
         color: color.tertiary,
-        iconStyle: IconStyle(color: color.surface, iconData: Icons.work),
+        iconStyle: IconStyle(
+          color: color.surface,
+          iconData: isEdu ? Icons.school : Icons.work,
+        ),
       ),
       beforeLineStyle: LineStyle(
         color: color.tertiary.withAlpha(50),
@@ -664,25 +858,26 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title,
+              company,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: 15,
                 color: color.onSurface,
               ),
             ),
             SizedBox(height: 5),
             Text(
-              company,
+              title,
               style: TextStyle(
                 color: color.tertiary,
                 fontWeight: FontWeight.w600,
-                fontSize: 13,
+                fontSize: 12,
               ),
             ),
             SizedBox(height: 5),
+
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 3),
               decoration: BoxDecoration(
                 color: color.tertiary.withAlpha(40),
                 borderRadius: BorderRadius.circular(12),
@@ -699,10 +894,11 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(height: 10),
             Text(
               description,
+              // textAlign: TextAlign.justify,
               style: TextStyle(
                 color: color.onSurfaceVariant,
-                height: 1.4,
-                fontSize: 13,
+                // height: 1.4,
+                fontSize: 12,
               ),
             ),
           ],
@@ -714,21 +910,27 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildProjectCard(
     String title,
     String description,
-    List<String> technologies,
+    // List<String> technologies,
     ColorScheme color,
     String image,
     String url,
   ) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth <= 600;
-    final isTablet = screenWidth > 600 && screenWidth <= 768;
+    final screenSize = MediaQuery.of(context).size;
+    final isMobile = screenSize.width <= 600;
+    final isTablet = screenSize.width > 600 && screenSize.width <= 768;
 
     return Container(
       width:
           isMobile
               ? double.infinity
-              : (isTablet ? screenWidth * 0.4 : screenWidth * 0.25),
-      padding: EdgeInsets.all(15),
+              : (isTablet ? screenSize.width * 0.2 : screenSize.width * 0.2),
+      height:
+          isMobile
+              ? double.infinity
+              : (isTablet
+                  ? screenSize.height * 0.35
+                  : screenSize.height * 0.35),
+      padding: EdgeInsets.all(10),
       margin: EdgeInsets.all(5),
       decoration: BoxDecoration(
         color: color.surface,
@@ -736,43 +938,44 @@ class _MyHomePageState extends State<MyHomePage> {
         border: Border.all(color: color.outline.withAlpha(50)),
         boxShadow: [
           BoxShadow(
-            color: color.tertiary.withAlpha(50),
-            blurRadius: 10,
-            offset: Offset(0, 5),
+            color: color.tertiary.withAlpha(20),
+            blurRadius: 8,
+            offset: Offset(2, 5),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ListTile(
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(image),
+              child: Image.network(image, scale: 6),
             ),
             title: Text(
               title,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 14,
+                fontSize: 12,
                 color: color.onSurface,
               ),
             ),
             // subtitle: Text(description),
-            trailing: IconButton(
-              onPressed: () => _launchUrl(url),
-              icon: Icon(Icons.link),
-            ),
+            // trailing: IconButton(
+            //   onPressed: () => _launchUrl(url),
+            //   icon: Icon(Icons.link),
+            // ),
           ),
           Text(
             description,
             style: TextStyle(
               color: color.onSurfaceVariant,
               height: 1.4,
-              fontSize: 12,
+              fontSize: 11,
             ),
           ),
-          SizedBox(height: 15),
+          /*     SizedBox(height: 5),
           Wrap(
             spacing: 6,
             runSpacing: 6,
@@ -799,6 +1002,32 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )
                     .toList(),
+          ),*/
+          SizedBox(height: screenSize.height * 0.01),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              OutlinedButton.icon(
+                onPressed: () => _launchUrl(url),
+                label: Text("PlayStore"),
+                style: ButtonStyle(
+                  textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12)),
+                  fixedSize: WidgetStatePropertyAll(Size(120, 20)),
+                  padding: WidgetStatePropertyAll(EdgeInsets.all(0)),
+                ),
+                // style: ButtonStyle(),
+                icon: Image.asset("lib/assets/playstore.png", scale: 3.2),
+              ),
+              OutlinedButton(
+                onPressed: () {},
+                style: ButtonStyle(
+                  textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12)),
+                  fixedSize: WidgetStatePropertyAll(Size(100, 20)),
+                  padding: WidgetStatePropertyAll(EdgeInsets.all(0)),
+                ),
+                child: Text("Read more"),
+              ),
+            ],
           ),
         ],
       ),

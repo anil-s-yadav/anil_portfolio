@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1086458151397",
+    "project_id": "anil-portfolio-388df",
+    "storage_bucket": "anil-portfolio-388df.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086458151397:android:52594f945898b8faa12f0c",
+        "android_client_info": {
+          "package_name": "com.example.anil_portfolio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSoksibKyGvm07mLYerxhW7hWoTvlnwDA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

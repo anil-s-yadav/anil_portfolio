@@ -1,5 +1,7 @@
 import 'package:anil_portfolio/all_projects_page.dart';
 import 'package:anil_portfolio/login_page.dart';
+import 'package:anil_portfolio/models.dart';
+import 'package:anil_portfolio/theme/firebase_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -46,13 +48,35 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  late final HomeController controller;
+  late HomeData data;
+  @override
+  void initState() {
+    super.initState();
+    controller = HomeController();
+    controller.loadHome().then((_) => setState(() {}));
+  }
+
   @override
   Widget build(BuildContext context) {
     ColorScheme color = Theme.of(context).colorScheme;
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth > 768;
     // final isTablet = screenWidth > 600 && screenWidth <= 768;
+    if (controller.isLoading) {
+      return Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: color.surfaceContainerLow,
+        child: const Center(child: CircularProgressIndicator()),
+      );
+    }
 
+    if (controller.error != null) {
+      return Center(child: Text(controller.error!));
+    }
+
+    data = controller.homeData!;
     return Scaffold(
       backgroundColor: color.surfaceContainerLow,
       appBar: AppBar(
@@ -285,7 +309,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             // SizedBox(height: 10),
             Text(
-              "A passionate Flutter developer with over 1 year of experience building beautiful, high-performance mobile apps. I’ve successfully developed and deployed multiple cross-platform applications for diverse domains including news, e-commerce, and productivity. My focus is on writing clean, maintainable code and delivering pixel-perfect UI with smooth user experiences. I’m proficient in Firebase, REST APIs, third-party integrations, and state management solutions like Provider and BLoC. I take pride in turning ideas into full-fledged apps from scratch. Looking forward to helping you build your next great app!",
+              data.about,
+              // "A passionate Flutter developer with over 1 year of experience building beautiful, high-performance mobile apps. I’ve successfully developed and deployed multiple cross-platform applications for diverse domains including news, e-commerce, and productivity. My focus is on writing clean, maintainable code and delivering pixel-perfect UI with smooth user experiences. I’m proficient in Firebase, REST APIs, third-party integrations, and state management solutions like Provider and BLoC. I take pride in turning ideas into full-fledged apps from scratch. Looking forward to helping you build your next great app!",
               textAlign: TextAlign.justify,
               style: TextStyle(
                 fontWeight: FontWeight.normal,
@@ -365,7 +390,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "A passionate Flutter developer with over 1 year of experience building beautiful, high-performance mobile apps. I’ve successfully developed and deployed multiple cross-platform applications for diverse domains including news, e-commerce, and productivity. My focus is on writing clean, maintainable code and delivering pixel-perfect UI with smooth user experiences. I’m proficient in Firebase, REST APIs, third-party integrations, and state management solutions like Provider and BLoC. I take pride in turning ideas into full-fledged apps from scratch. Looking forward to helping you build your next great app!",
+                    data.about,
+                    // "A passionate Flutter developer with over 1 year of experience building beautiful, high-performance mobile apps. I’ve successfully developed and deployed multiple cross-platform applications for diverse domains including news, e-commerce, and productivity. My focus is on writing clean, maintainable code and delivering pixel-perfect UI with smooth user experiences. I’m proficient in Firebase, REST APIs, third-party integrations, and state management solutions like Provider and BLoC. I take pride in turning ideas into full-fledged apps from scratch. Looking forward to helping you build your next great app!",
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       // height: 1.6,
@@ -401,8 +427,25 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildProjectsSection(ColorScheme color) {
     final screenWidth = MediaQuery.of(context).size.width;
+
+    // Define breakpoints
     final isMobile = screenWidth <= 600;
-    // final isTablet = screenWidth > 600 && screenWidth <= 768;
+    final isTablet =
+        screenWidth > 600 && screenWidth <= 1024; // adjust as needed
+    final isDesktop = screenWidth > 1024;
+
+    // Determine how many projects to show
+    int projectCount;
+    if (isDesktop) {
+      projectCount = 4;
+    } else if (isTablet) {
+      projectCount = 3;
+    } else {
+      projectCount = 2;
+    }
+
+    // Slice the list safely
+    final projectsToShow = data.projects.take(projectCount).toList();
 
     return Container(
       key: sectionKeys['projectsKey'],
@@ -456,54 +499,22 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
           SizedBox(height: 20),
-
           Center(
             child: Wrap(
-              alignment: WrapAlignment.center,
-              runAlignment: WrapAlignment.center,
               spacing: 15,
               runSpacing: 15,
-              children: [
-                _buildProjectCard(
-                  "Stream24 Short News & Live Tv",
-                  "Stream24 is a smart news and live TV app offering real-time updates, personalized news, and trending reels. Watch live channels, read AI-powered news summaries, and stay informed anytime, anywhere.",
-                  // [
-                  //   "Flutter",
-                  //   "Dart",
-                  //   "Python",
-                  //   "Fast Api",
-                  //   "Firebase",
-                  //   "summary AI Model",
-                  // ],
-                  color,
-                  "https://raw.githubusercontent.com/anil-s-yadav/stream24news_crm/refs/heads/main/lib/assets/news_app_logos/aboutus_logo.png",
-                  "https://play.google.com/store/apps/details?id=com.legendarysoftware.stream24news&pcampaignid=web_share",
-                ),
-                _buildProjectCard(
-                  "WhatsApp Media Manager",
-                  "An all-in-one app to manage WhatsApp media including photos, PDFs, videos, and more. Easily view, organize, and download both hidden and regular files with a clean, user-friendly interface.",
-                  // ["Flutter", "Dart", "Native Channels"],
-                  color,
-                  "https://raw.githubusercontent.com/anil-s-yadav/WhatsApp-Media-Manager/refs/heads/main/lib/images/logo.png",
-                  "https://play.google.com/store/apps/details?id=com.legendarysoftware.stream24news&pcampaignid=web_share",
-                ),
-                _buildProjectCard(
-                  "WhatsApp Media Manager",
-                  "An all-in-one app to manage WhatsApp media including photos, PDFs, videos, and more. Easily view, organize, and download both hidden and regular files with a clean, user-friendly interface.",
-                  // ["Flutter", "Dart", "Native Channels"],
-                  color,
-                  "https://raw.githubusercontent.com/anil-s-yadav/WhatsApp-Media-Manager/refs/heads/main/lib/images/logo.png",
-                  "https://play.google.com/store/apps/details?id=com.legendarysoftware.stream24news&pcampaignid=web_share",
-                ),
-                _buildProjectCard(
-                  "WhatsApp Media Manager",
-                  "An all-in-one app to manage WhatsApp media including photos, PDFs, videos, and more. Easily view, organize, and download both hidden and regular files with a clean, user-friendly interface.",
-                  // ["Flutter", "Dart", "Native Channels"],
-                  color,
-                  "https://raw.githubusercontent.com/anil-s-yadav/WhatsApp-Media-Manager/refs/heads/main/lib/images/logo.png",
-                  "https://play.google.com/store/apps/details?id=com.legendarysoftware.stream24news&pcampaignid=web_share",
-                ),
-              ],
+              children:
+                  projectsToShow
+                      .map(
+                        (proj) => _buildProjectCard(
+                          proj.title,
+                          proj.description,
+                          color,
+                          proj.icon,
+                          proj.url,
+                        ),
+                      )
+                      .toList(),
             ),
           ),
         ],
@@ -552,20 +563,21 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           SizedBox(height: 20),
           Wrap(
-            runSpacing: 20,
-            spacing: 20,
-            children: [
-              Text("Flutter"),
-              Text("Flutter"),
-              Text("Flutter"),
-              Text("Flutter"),
-              Text("Flutter"),
-              Text("Flutter"),
-              Text("Flutter"),
-              Text("Flutter"),
-              Text("Flutter"),
-              Text("Flutter"),
-            ],
+            runSpacing: 10,
+            spacing: 10,
+            children:
+                data.skills
+                    .map(
+                      (skill) => Chip(
+                        label: Text(skill),
+                        labelPadding: EdgeInsets.all(0),
+                        labelStyle: TextStyle(
+                          fontSize: 12,
+                          color: color.secondaryContainer,
+                        ),
+                      ),
+                    )
+                    .toList(),
           ),
         ],
       ),
@@ -609,32 +621,48 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
           SizedBox(height: 20),
-          _buildTimelineItem(
-            " V-Trans India – Mumbai, India",
-            " Flutter Developer   ",
-            "Jan 2026 - Present",
-            "•  Developed and maintained a custom Flutter-based application for the company.\n• Contributed to 24-hour maid services and IT service solutions through app development.",
-            color,
-            true,
-          ),
-          _buildTimelineItem(
-            " Kaamwalibais – Mumbai, India",
-            " Flutter Developer   ",
+          ...data.experiences.asMap().entries.map((entry) {
+            final index = entry.key;
+            final ex = entry.value;
 
-            "Dec 2024 - Dec 2025",
-            "•  Developed and maintained a custom Flutter-based application for the company.\n• Contributed to 24-hour maid services and IT service solutions through app development.",
-            color,
-            false,
-          ),
-          _buildTimelineItem(
-            "Prodigy InfoTech · Internship",
-            "Android Developer (Java,Kotlin)",
+            final isFirst = index == 0;
 
-            "Jan 2024 - March 2024",
-            "• Contribute in componies app development projects.",
-            color,
-            false,
-          ),
+            return _buildTimelineItem(
+              ex.company,
+              ex.title,
+              ex.time,
+              ex.desc[0],
+              color,
+              isFirst, // true only for last item, false for others
+            );
+          }),
+
+          // _buildTimelineItem(
+          //   " V-Trans India – Mumbai, India",
+          //   " Flutter Developer   ",
+          //   "Jan 2026 - Present",
+          //   "•  Developed and maintained a custom Flutter-based application for the company.\n• Contributed to 24-hour maid services and IT service solutions through app development.",
+          //   color,
+          //   true,
+          // ),
+          // _buildTimelineItem(
+          //   " Kaamwalibais – Mumbai, India",
+          //   " Flutter Developer   ",
+
+          //   "Dec 2024 - Dec 2025",
+          //   "•  Developed and maintained a custom Flutter-based application for the company.\n• Contributed to 24-hour maid services and IT service solutions through app development.",
+          //   color,
+          //   false,
+          // ),
+          // _buildTimelineItem(
+          //   "Prodigy InfoTech · Internship",
+          //   "Android Developer (Java,Kotlin)",
+
+          //   "Jan 2024 - March 2024",
+          //   "• Contribute in componies app development projects.",
+          //   color,
+          //   false,
+          // ),
         ],
       ),
     );
@@ -799,10 +827,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: color,
                     ),
                     const SizedBox(height: 12),
-                    _serviceItem("Flutter Mobile & Web Apps"),
-                    _serviceItem("UI/UX Design"),
-                    _serviceItem("Firebase Backend"),
-                    _serviceItem("App Performance Optimization"),
+                    _serviceItem("Apps for Androiid & IOS"),
+                    _serviceItem("Web Apps development"),
+                    _serviceItem("CRM and dashboard Development"),
+                    _serviceItem("Api Development"),
                   ],
                 ),
               ),
@@ -813,9 +841,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     _sectionTitle(title: "", color: color),
                     const SizedBox(height: 12),
-                    _serviceItem("Flutter Mobile & Web Apps"),
                     _serviceItem("UI/UX Design"),
-                    _serviceItem("Firebase Backend"),
+                    _serviceItem("Bug Fixing"),
+                    _serviceItem("App and WebApps Maintenance"),
                     _serviceItem("App Performance Optimization"),
                   ],
                 ),

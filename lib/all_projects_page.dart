@@ -121,20 +121,23 @@ class _AllProjectsPageState extends State<AllProjectsPage> {
                 spacing: 15,
                 runSpacing: 15,
                 children: [
-                  _buildProjectCard(
-                    "Stream24 Short News & Live Tv",
-                    "Stream24 is a smart news and live TV app offering real-time updates, personalized news, and trending reels. Watch live channels, read AI-powered news summaries, and stay informed anytime, anywhere.",
-                    // [
-                    //   "Flutter",
-                    //   "Dart",
-                    //   "Python",
-                    //   "Fast Api",
-                    //   "Firebase",
-                    //   "summary AI Model",
-                    // ],
-                    color,
-                    "https://raw.githubusercontent.com/anil-s-yadav/stream24news_crm/refs/heads/main/lib/assets/news_app_logos/aboutus_logo.png",
-                    "https://play.google.com/store/apps/details?id=com.legendarysoftware.stream24news&pcampaignid=web_share",
+                  GestureDetector(
+                    // onTap: () => Show,
+                    child: _buildProjectCard(
+                      "Stream24 Short News & Live Tv",
+                      "Stream24 is a smart news and live TV app offering real-time updates, personalized news, and trending reels. Watch live channels, read AI-powered news summaries, and stay informed anytime, anywhere.",
+                      // [
+                      //   "Flutter",
+                      //   "Dart",
+                      //   "Python",
+                      //   "Fast Api",
+                      //   "Firebase",
+                      //   "summary AI Model",
+                      // ],
+                      color,
+                      "https://raw.githubusercontent.com/anil-s-yadav/stream24news_crm/refs/heads/main/lib/assets/news_app_logos/aboutus_logo.png",
+                      "https://play.google.com/store/apps/details?id=com.legendarysoftware.stream24news&pcampaignid=web_share",
+                    ),
                   ),
                   _buildProjectCard(
                     "WhatsApp Media Manager",

@@ -653,7 +653,7 @@ class _MyHomePageState extends State<MyHomePage> {
           SizedBox(height: 20),
           Wrap(
             runSpacing: 10,
-            spacing: 10,
+            spacing: 5,
             children:
                 data.skills
                     .map(

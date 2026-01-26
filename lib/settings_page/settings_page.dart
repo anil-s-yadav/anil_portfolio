@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:anil_portfolio/models.dart';
+import 'package:anil_portfolio/theme/firebase_apis.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -8,32 +12,117 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final aboutCnlrt = TextEditingController();
+  final skillsCnlrt = TextEditingController();
+  bool isAbout = false;
+  bool isSkills = false;
+  bool isProjects = false;
+  bool isExperience = false;
+  bool isEducation = false;
+
+  final HomeController controller = HomeController();
+  late HomeData data;
+  late List<String> newSkills;
+  @override
+  void initState() {
+    super.initState();
+    loadAlldata();
+  }
+
+  void loadAlldata({bool isResetBtn = false}) {
+    controller.loadHome().then((onValue) {
+      aboutCnlrt.text = controller.homeData?.about ?? "error";
+      if (isResetBtn == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Page Reloaded!"),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+      newSkills = controller.homeData?.skills ?? ["error"];
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     ColorScheme color = Theme.of(context).colorScheme;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth > 768;
+    final isMobile = screenWidth <= 655;
+    final isTablet = screenWidth > 655 && screenWidth <= 768;
+    if (controller.isLoading) {
+      return Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: color.surfaceContainerLow,
+        child: const Center(child: CircularProgressIndicator()),
+      );
+    }
 
+    if (controller.error != null) {
+      return Center(child: Text(controller.error!));
+    }
+
+    data = controller.homeData!;
     return Scaffold(
-      appBar: AppBar(title: const Text("Settingss"), centerTitle: true),
+      appBar: AppBar(
+        title: const Text("Settingss"),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () => loadAlldata(isResetBtn: true),
+            icon: Icon(Icons.replay_rounded),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              editOpt(color, "Edit About section"),
-              editOpt(color, "Edit Projects section"),
-              editOpt(color, "Edit Education section"),
-              editOpt(color, "Edit Experience section"),
-              editOpt(color, "Edit Skills section"),
-            ],
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                editOpt(
+                  color,
+                  "Edit About section",
+                  () => setState(() => isAbout = !isAbout),
+                ),
+                editOpt(
+                  color,
+                  "Edit Skills section",
+                  () => setState(() => isSkills = !isSkills),
+                ),
+                editOpt(
+                  color,
+                  "Edit Projects section",
+                  () => setState(() => isProjects = true),
+                ),
+                editOpt(
+                  color,
+                  "Edit Experience section",
+                  () => setState(() => isExperience = true),
+                ),
+                editOpt(
+                  color,
+                  "Edit Education section",
+
+                  // () => setState(() => isEducation = true),
+                  () {},
+                ),
+                Visibility(visible: isAbout == true, child: editAbout(color)),
+                Visibility(visible: isSkills == true, child: editSkills(color)),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget editOpt(ColorScheme color, String title) {
+  Widget editOpt(ColorScheme color, String title, GestureTapCallback? ontap) {
     final size = MediaQuery.of(context).size;
     final isDesktop = size.width >= 600;
 
@@ -41,11 +130,7 @@ class _SettingsPageState extends State<SettingsPage> {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(15),
-        onTap: () {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text("Clicked")));
-        },
+        onTap: ontap,
         child: Container(
           width: isDesktop ? size.width * 0.4 : size.width * 0.8,
           padding: const EdgeInsets.all(16),
@@ -68,6 +153,189 @@ class _SettingsPageState extends State<SettingsPage> {
             textAlign: TextAlign.center,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget editAbout(ColorScheme color) {
+    final size = MediaQuery.of(context).size;
+    final isDesktop = size.width >= 600;
+
+    return Container(
+      width: isDesktop ? size.width * 0.4 : size.width * 0.8,
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(vertical: 6),
+      decoration: BoxDecoration(
+        color: color.surface,
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: color.outline.withAlpha(50)),
+        boxShadow: [
+          BoxShadow(
+            color: color.tertiary.withAlpha(20),
+            blurRadius: 8,
+            offset: const Offset(2, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          FittedBox(
+            child: Row(
+              spacing: 20,
+              children: [
+                Text("Edit About Section"),
+                OutlinedButton(
+                  onPressed: () => setState(() => isAbout = false),
+                  child: Text("Cancel"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    final res = await EditData().updateAbout(aboutCnlrt.text);
+                    if (res == true) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text("Success")));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Operation failled!")),
+                      );
+                    }
+                  },
+                  child: Text("Save"),
+                ),
+              ],
+            ),
+          ),
+          Divider(),
+          TextField(
+            controller: aboutCnlrt,
+            keyboardType: TextInputType.multiline,
+            // maxLength: 150,
+            maxLines: null,
+            minLines: null,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: color.outline.withAlpha(50)),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget editSkills(ColorScheme color) {
+    final size = MediaQuery.of(context).size;
+    final isDesktop = size.width >= 600;
+
+    return Container(
+      // height: 100, //testing delete later
+      // key: sectionKeys['skillsKey'],
+      width: isDesktop ? size.width * 0.6 : size.width,
+      margin: EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: color.surfaceContainer,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: color.shadow.withAlpha(50),
+            blurRadius: 15,
+            offset: Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          FittedBox(
+            child: Row(
+              spacing: 20,
+              children: [
+                Text("Edit Skills"),
+                OutlinedButton(
+                  onPressed: () => setState(() => isSkills = false),
+                  child: Text("Cancel"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    final res = await EditData().updateSkills(newSkills);
+                    if (res == true) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text("Success")));
+                      setState(() {});
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Operation failled!")),
+                      );
+                    }
+                  },
+                  child: Text("Save"),
+                ),
+              ],
+            ),
+          ),
+          // Divider(),
+          SizedBox(height: 10),
+          Wrap(
+            runSpacing: 10,
+            spacing: 10,
+            children:
+                newSkills.map((skill) {
+                  return Chip(
+                    deleteIcon: const Icon(Icons.cancel),
+                    onDeleted: () {
+                      // Your delete logic here
+                      newSkills.remove(skill);
+                      setState(() {});
+                      log("Deleted: $skill");
+                    },
+                    label: Text(skill),
+                    labelStyle: TextStyle(fontSize: 11, color: color.tertiary),
+                  );
+                }).toList(),
+          ),
+          // SizedBox(height: 10),
+          Container(
+            margin: EdgeInsets.only(top: 10),
+            width: double.infinity,
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: color.surfaceContainer,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: color.shadow.withAlpha(50),
+                  blurRadius: 15,
+                  offset: Offset(0, 8),
+                ),
+              ],
+            ),
+            child: TextField(
+              controller: skillsCnlrt,
+              decoration: InputDecoration(
+                // contentPadding: EdgeInsets.all(5),
+                suffix: IconButton(
+                  onPressed: () {
+                    if (skillsCnlrt.text.isNotEmpty) {
+                      newSkills.add(skillsCnlrt.text);
+                      log(newSkills.toString());
+                      skillsCnlrt.clear();
+                      setState(() {});
+                    }
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Colors.green),
+                    foregroundColor: WidgetStatePropertyAll(Colors.white),
+                  ),
+                  icon: Icon(Icons.done),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

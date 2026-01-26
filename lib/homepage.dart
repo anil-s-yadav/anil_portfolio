@@ -571,7 +571,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AllProjectsPage(),
+                        builder:
+                            (context) =>
+                                AllProjectsPage(projects: data.projects),
                       ),
                     ),
                 child: Text(
@@ -609,7 +611,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _buildSkillsSection(ColorScheme color) {
+  Widget   _buildSkillsSection(ColorScheme color) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth <= 655;
     // final isTablet = screenWidth > 655 && screenWidth <= 768;
@@ -1261,26 +1263,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _buildContactItem(IconData icon, Color color, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: EdgeInsets.all(10),
-        padding: EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          color: color.withAlpha(30),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Icon(icon, color: color, size: 21),
-      ),
-    );
-  }
-
   Future<void> _launchUrl(String url) async {
     await launchUrl(Uri.parse(url));
-  }
-
-  Widget _buildMobileContactSection(ColorScheme color) {
-    return Text("contact");
   }
 }

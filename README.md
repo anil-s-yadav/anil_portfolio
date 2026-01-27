@@ -32,3 +32,7 @@ In `.gitignore`, we ignore all build files except web:
 /build/*
 !/build/web/
 !/build/web/**
+
+
+
+resume is uploaded on "anilyadav44x@gmail.com" drive.

@@ -36,6 +36,11 @@ class HomeRepository {
 
   Future<HomeData> fetchHomeData() async {
     try {
+      final resumeSnap =
+          await _firestore
+              .collection('resume')
+              .doc('HP5nbvwB4U74ppRuK57G')
+              .get();
       final aboutSnap =
           await _firestore
               .collection('about')
@@ -55,6 +60,7 @@ class HomeRepository {
       // final educationSnap = await _firestore.collection('education').get();
 
       return HomeData(
+        resume: resumeSnap.data()?['url']?.toString() ?? '',
         about: aboutSnap.data()?['about']?.toString() ?? '',
 
         skills:

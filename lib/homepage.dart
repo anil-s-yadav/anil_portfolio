@@ -1,7 +1,7 @@
 import 'package:anil_portfolio/all_projects_page.dart';
 import 'package:anil_portfolio/login_page.dart';
 import 'package:anil_portfolio/models.dart';
-import 'package:anil_portfolio/theme/firebase_apis.dart';
+import 'package:anil_portfolio/firebase_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -257,10 +257,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               ),
             ),
-            onPressed:
-                () => _launchUrl(
-                  "https://drive.google.com/file/d/1G451jAT3YK4wnDkH7oidk6I_dhr2G76l/view?usp=sharing",
-                ),
+            onPressed: () => _launchUrl(data.resume),
             child: Text(
               "Download Resume",
               style: TextStyle(
@@ -290,42 +287,42 @@ class _MyHomePageState extends State<MyHomePage> {
             scrollTo("homeKey");
             Navigator.pop(context);
           },
-          child: Text("Home", style: TextStyle(fontSize: 11)),
+          child: Text("Home"),
         ),
         InkWell(
           onTap: () {
             scrollTo("skillsKey");
             Navigator.pop(context);
           },
-          child: Text("Skills", style: TextStyle(fontSize: 11)),
+          child: Text("Skills"),
         ),
         InkWell(
           onTap: () {
             scrollTo("projectsKey");
             Navigator.pop(context);
           },
-          child: Text("Projects", style: TextStyle(fontSize: 11)),
+          child: Text("Projects"),
         ),
         InkWell(
           onTap: () {
             scrollTo("experienceKey");
             Navigator.pop(context);
           },
-          child: Text("Experience", style: TextStyle(fontSize: 11)),
+          child: Text("Experience"),
         ),
         InkWell(
           onTap: () {
             scrollTo("EducationKey");
             Navigator.pop(context);
           },
-          child: Text("Education", style: TextStyle(fontSize: 11)),
+          child: Text("Education"),
         ),
         InkWell(
           onTap: () {
             scrollTo("contactKey");
             Navigator.pop(context);
           },
-          child: Text("Contact me", style: TextStyle(fontSize: 11)),
+          child: Text("Contact me"),
         ),
         Divider(),
       ],
@@ -611,7 +608,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget   _buildSkillsSection(ColorScheme color) {
+  Widget _buildSkillsSection(ColorScheme color) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth <= 655;
     // final isTablet = screenWidth > 655 && screenWidth <= 768;
@@ -658,7 +655,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 data.skills
                     .map(
                       (skill) => Chip(
-                        label: Text(skill),
+                        label: SelectableText(skill),
                         labelPadding: EdgeInsets.all(0),
                         labelStyle: TextStyle(
                           fontSize: 11,
@@ -721,7 +718,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ex.company,
               ex.title,
               ex.time,
-              ex.desc[0],
+              ex.desc,
               color,
               isFirst, // true only for last item, false for others
             );
@@ -800,7 +797,7 @@ class _MyHomePageState extends State<MyHomePage> {
             " B.Sc. - Information Technology",
             " Bunts sangha S. M. Shetty college, Powai",
             "2021 - 2024",
-            "CGPA - 8.10",
+            ["CGPA - 8.10"],
             color,
             true,
             isEdu: true,
@@ -809,7 +806,7 @@ class _MyHomePageState extends State<MyHomePage> {
             "HSC - 12th Science",
             "Ramniranjan Jhunjhunwala collage, Ghatkoper.",
             "2019 - 2021",
-            "Marks - 78.67%",
+            ["Marks - 78.67%"],
             color,
             false,
             isEdu: true,
@@ -818,7 +815,7 @@ class _MyHomePageState extends State<MyHomePage> {
             "SSC- 10th",
             " Hindi High School, Ghatkoper.",
             "Compleated in 2019",
-            "Marks - 84.45%",
+            ["Marks - 84.45%"],
             color,
             false,
             isEdu: true,
@@ -1060,7 +1057,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           const Icon(Icons.check_circle, size: 16, color: Colors.green),
           const SizedBox(width: 8),
-          Expanded(child: Text(text, style: TextStyle(fontSize: 11))),
+          Expanded(child: Text(text, style: TextStyle(fontSize: 12))),
         ],
       ),
     );
@@ -1074,7 +1071,7 @@ class _MyHomePageState extends State<MyHomePage> {
     String company,
     String title,
     String period,
-    String description,
+    List<String> description,
     ColorScheme color,
     bool isLast, {
     bool isEdu = false,
@@ -1114,7 +1111,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            SelectableText(
               company,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -1123,7 +1120,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             SizedBox(height: 5),
-            Text(
+            SelectableText(
               title,
               style: TextStyle(
                 color: color.tertiary,
@@ -1149,15 +1146,25 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             SizedBox(height: 10),
-            Text(
-              description,
-              // textAlign: TextAlign.justify,
-              style: TextStyle(
-                color: color.onSurfaceVariant,
-                // height: 1.4,
-                fontSize: 12,
+            ...description.map(
+              (e) => Text(
+                '•  $e',
+                style: TextStyle(
+                  color: color.onSurfaceVariant,
+                  // height: 1.4,
+                  fontSize: 12,
+                ),
               ),
             ),
+            // Text(
+            //   description[0],
+            //   // textAlign: TextAlign.justify,
+            //   style: TextStyle(
+            //     color: color.onSurfaceVariant,
+            //     // height: 1.4,
+            //     fontSize: 12,
+            //   ),
+            // ),
           ],
         ),
       ),

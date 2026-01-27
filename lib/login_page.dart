@@ -1,5 +1,5 @@
 import 'package:anil_portfolio/settings_page/settings_page.dart';
-import 'package:anil_portfolio/theme/firebase_apis.dart';
+import 'package:anil_portfolio/firebase_apis.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {

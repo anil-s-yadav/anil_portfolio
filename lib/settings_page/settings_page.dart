@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:anil_portfolio/models.dart';
-import 'package:anil_portfolio/theme/firebase_apis.dart';
+import 'package:anil_portfolio/firebase_apis.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {

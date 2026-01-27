@@ -1,4 +1,5 @@
 class HomeData {
+  final String resume;
   final String about;
   final List<String> skills;
   final List<Project> projects;
@@ -6,6 +7,7 @@ class HomeData {
   // final List<Education> education;
 
   HomeData({
+    required this.resume,
     required this.about,
     required this.skills,
     required this.projects,

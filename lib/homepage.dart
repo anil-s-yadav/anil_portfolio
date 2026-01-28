@@ -1,4 +1,5 @@
 import 'package:anil_portfolio/all_projects_page.dart';
+import 'package:anil_portfolio/apkpure_webview_age.dart';
 import 'package:anil_portfolio/login_page.dart';
 import 'package:anil_portfolio/models.dart';
 import 'package:anil_portfolio/firebase_apis.dart';
@@ -597,7 +598,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           proj.description,
                           color,
                           proj.icon,
-                          proj.url,
+                          proj.playUrl,
+                          proj.moreUrl,
                         ),
                       )
                       .toList(),
@@ -1177,7 +1179,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // List<String> technologies,
     ColorScheme color,
     String image,
-    String url,
+    String playurl,
+    String moreUrl,
   ) {
     final screenSize = MediaQuery.of(context).size;
     final isTablet = screenSize.width > 655 && screenSize.width <= 768;
@@ -1245,7 +1248,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 OutlinedButton.icon(
-                  onPressed: () => _launchUrl(url),
+                  onPressed: () => _launchUrl(playurl),
                   label: Text("PlayStore"),
                   // style: ButtonStyle(
                   //   textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12)),
@@ -1256,7 +1259,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Image.asset("lib/assets/playstore.png", scale: 3.2),
                 ),
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () => _launchUrl(moreUrl),
+
+                  // onPressed:
+                  //     () => Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder:
+                  //             (context) => ApkPureWebViewPage(url: moreUrl),
+                  //       ),
+                  //     ),
                   // style: ButtonStyle(
                   //   textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12)),
                   // ),

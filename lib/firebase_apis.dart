@@ -171,7 +171,8 @@ class EditData {
         'title': project.title,
         'description': project.description,
         'icon': project.icon,
-        'url': project.url,
+        'play_url': project.playUrl,
+        'more_url': project.moreUrl,
       });
 
       return true;
@@ -183,11 +184,12 @@ class EditData {
 
   Future<bool> updateProject(Project project) async {
     try {
-      await _firestore.collection('projects').doc(project.id).update({
+      await _firestore.collection('projects').doc().update({
         'title': project.title,
         'description': project.description,
         'icon': project.icon,
-        'url': project.url,
+        'play_url': project.playUrl,
+        'more_url': project.moreUrl,
       });
 
       return true;

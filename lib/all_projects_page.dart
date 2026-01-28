@@ -1,3 +1,4 @@
+import 'package:anil_portfolio/apkpure_webview_age.dart';
 import 'package:anil_portfolio/models.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -124,7 +125,8 @@ class _AllProjectsPageState extends State<AllProjectsPage> {
                             proj.description,
                             color,
                             proj.icon,
-                            proj.url,
+                            proj.playUrl,
+                            proj.moreUrl,
                           ),
                         )
                         .toList(),
@@ -255,7 +257,8 @@ class _AllProjectsPageState extends State<AllProjectsPage> {
     // List<String> technologies,
     ColorScheme color,
     String image,
-    String url,
+    String playUrl,
+    String moreUrl,
   ) {
     final screenSize = MediaQuery.of(context).size;
     final isTablet = screenSize.width > 655 && screenSize.width <= 768;
@@ -323,7 +326,7 @@ class _AllProjectsPageState extends State<AllProjectsPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 OutlinedButton.icon(
-                  onPressed: () => _launchUrl(url),
+                  onPressed: () => _launchUrl(playUrl),
                   label: Text("PlayStore"),
                   // style: ButtonStyle(
                   //   textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12)),
@@ -334,7 +337,15 @@ class _AllProjectsPageState extends State<AllProjectsPage> {
                   icon: Image.asset("lib/assets/playstore.png", scale: 3.2),
                 ),
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () => _launchUrl(moreUrl),
+                  // onPressed:
+                  // () => Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder:
+                  //         (context) => ApkPureWebViewPage(url: moreUrl),
+                  //   ),
+                  // ),
                   // style: ButtonStyle(
                   //   textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12)),
                   // ),

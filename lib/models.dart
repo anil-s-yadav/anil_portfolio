@@ -17,27 +17,27 @@ class HomeData {
 }
 
 class Project {
-  final String id;
   final String title;
   final String description;
   final String icon;
-  final String url;
+  final String moreUrl;
+  final String playUrl;
 
   Project({
-    required this.id,
     required this.title,
     required this.description,
     required this.icon,
-    required this.url,
+    required this.moreUrl,
+    required this.playUrl,
   });
 
   factory Project.fromFirestore(Map<String, dynamic> data, String id) {
     return Project(
-      id: data['id'] ?? '',
       title: data['title'] ?? '',
       description: data['description'] ?? '',
       icon: data['icon'] ?? '',
-      url: data['url'] ?? '',
+      moreUrl: data['more_url'] ?? '',
+      playUrl: data['play_url'] ?? '',
     );
   }
 }

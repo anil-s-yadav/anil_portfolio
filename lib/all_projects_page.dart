@@ -1,4 +1,3 @@
-import 'package:anil_portfolio/apkpure_webview_age.dart';
 import 'package:anil_portfolio/models.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -127,6 +126,7 @@ class _AllProjectsPageState extends State<AllProjectsPage> {
                             proj.icon,
                             proj.playUrl,
                             proj.moreUrl,
+                            proj.iosUrl,
                           ),
                         )
                         .toList(),
@@ -259,6 +259,7 @@ class _AllProjectsPageState extends State<AllProjectsPage> {
     String image,
     String playUrl,
     String moreUrl,
+    String iosUrl,
   ) {
     final screenSize = MediaQuery.of(context).size;
     final isTablet = screenSize.width > 655 && screenSize.width <= 768;
@@ -309,7 +310,6 @@ class _AllProjectsPageState extends State<AllProjectsPage> {
             ],
           ),
           SizedBox(height: 5),
-
           Text(
             description,
             style: TextStyle(
@@ -322,20 +322,20 @@ class _AllProjectsPageState extends State<AllProjectsPage> {
           SizedBox(height: screenSize.height * 0.01),
           FittedBox(
             child: Row(
-              spacing: 10,
+              spacing: iosUrl.isNotEmpty ? 10 : 4,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 OutlinedButton.icon(
                   onPressed: () => _launchUrl(playUrl),
-                  label: Text("PlayStore"),
-                  // style: ButtonStyle(
-                  //   textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12)),
-                  //   fixedSize: WidgetStatePropertyAll(Size(120, 20)),
-                  //   padding: WidgetStatePropertyAll(EdgeInsets.all(0)),
-                  // ),
-                  // style: ButtonStyle(),
+                  label: Text("Play Store"),
                   icon: Image.asset("lib/assets/playstore.png", scale: 3.2),
                 ),
+                if (iosUrl.isNotEmpty)
+                  OutlinedButton.icon(
+                    onPressed: () => _launchUrl(iosUrl),
+                    label: Text("App Store"),
+                    icon: Image.asset("lib/assets/appstore.png", scale: 3.2),
+                  ),
                 OutlinedButton(
                   onPressed: () => _launchUrl(moreUrl),
                   // onPressed:

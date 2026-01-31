@@ -25,7 +25,6 @@
 //         children: [
 //           InAppWebView(
 //             initialUrlRequest: URLRequest(url: WebUri(url)),
-
 //             initialOptions: InAppWebViewGroupOptions(
 //               crossPlatform: InAppWebViewOptions(
 //                 javaScriptEnabled: true,

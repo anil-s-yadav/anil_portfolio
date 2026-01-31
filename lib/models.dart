@@ -17,38 +17,46 @@ class HomeData {
 }
 
 class Project {
+  final String id;
   final String title;
   final String description;
   final String icon;
   final String moreUrl;
   final String playUrl;
+  final String iosUrl;
 
   Project({
+    required this.id,
     required this.title,
     required this.description,
     required this.icon,
     required this.moreUrl,
     required this.playUrl,
+    required this.iosUrl,
   });
 
   factory Project.fromFirestore(Map<String, dynamic> data, String id) {
     return Project(
+      id: id,
       title: data['title'] ?? '',
       description: data['description'] ?? '',
       icon: data['icon'] ?? '',
       moreUrl: data['more_url'] ?? '',
       playUrl: data['play_url'] ?? '',
+      iosUrl: data['ios_url'] ?? '',
     );
   }
 }
 
 class Experience {
+  final String id;
   final String company;
   final String title;
   final String time;
   final List<String> desc;
 
   Experience({
+    required this.id,
     required this.company,
     required this.title,
     required this.time,
@@ -57,6 +65,7 @@ class Experience {
 
   factory Experience.fromFirestore(Map<String, dynamic> data, String id) {
     return Experience(
+      id: id,
       company: data['company']?.toString() ?? '',
       title: data['title']?.toString() ?? '',
       time: data['time']?.toString() ?? '',

@@ -109,6 +109,19 @@ class EditData {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // ================= ABOUT =================
+  Future<bool> updateResumeUrl(String newUrl) async {
+    try {
+      await _firestore.collection('resume').doc('HP5nbvwB4U74ppRuK57G').update({
+        'url': newUrl,
+      });
+
+      return true;
+    } catch (e) {
+      log('Update About Error: $e');
+      return false;
+    }
+  }
+  // ================= ABOUT =================
 
   Future<bool> updateAbout(String newAbout) async {
     try {
@@ -173,6 +186,7 @@ class EditData {
         'icon': project.icon,
         'play_url': project.playUrl,
         'more_url': project.moreUrl,
+        'ios_url': project.iosUrl,
       });
 
       return true;
@@ -182,12 +196,13 @@ class EditData {
     }
   }
 
-  Future<bool> updateProject(Project project) async {
+  Future<bool> updateProject(Project project, String id) async {
     try {
-      await _firestore.collection('projects').doc().update({
+      await _firestore.collection('projects').doc(id).update({
         'title': project.title,
         'description': project.description,
         'icon': project.icon,
+        'ios_url': project.iosUrl,
         'play_url': project.playUrl,
         'more_url': project.moreUrl,
       });
@@ -199,9 +214,9 @@ class EditData {
     }
   }
 
-  Future<bool> deleteProject(String projectId) async {
+  Future<bool> deleteProject(String id) async {
     try {
-      await _firestore.collection('projects').doc(projectId).delete();
+      await _firestore.collection('projects').doc(id).delete();
 
       return true;
     } catch (e) {

@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth > 768;
     final isMobile = screenWidth <= 655;
-    final isTablet = screenWidth > 655 && screenWidth <= 768;
+    // final isTablet = screenWidth > 655 && screenWidth <= 768;
     if (controller.isLoading) {
       return Container(
         width: double.infinity,
@@ -188,19 +188,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
             ),
 
-          Text(
-            "Anil S. Yadav",
-            style: TextStyle(
-              color: color.secondaryFixedDim,
-              fontWeight: FontWeight.bold,
-              fontSize:
-                  isMobile
-                      ? 13
-                      : isTablet
-                      ? 14
-                      : 16,
+          if (screenWidth > 320)
+            Text(
+              "Anil S. Yadav",
+              style: TextStyle(
+                color: color.secondaryFixedDim,
+                fontWeight: FontWeight.bold,
+                fontSize:
+                    isMobile
+                        ? 13
+                        : isTablet
+                        ? 14
+                        : 16,
+              ),
             ),
-          ),
           if (!isMobile)
             Row(
               spacing: isDesktop ? 20 : 5,
@@ -209,21 +210,21 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 InkWell(
                   onTap: () => scrollTo("homeKey"),
-                  child: Text("Home", style: TextStyle(fontSize: 11)),
+                  child: Text("Home", style: TextStyle(fontSize: 12)),
                 ),
                 InkWell(
                   onTap: () => scrollTo("skillsKey"),
-                  child: Text("Skills", style: TextStyle(fontSize: 11)),
+                  child: Text("Skills", style: TextStyle(fontSize: 12)),
                 ),
                 InkWell(
                   onTap: () => scrollTo("projectsKey"),
-                  child: Text("Projects", style: TextStyle(fontSize: 11)),
+                  child: Text("Projects", style: TextStyle(fontSize: 12)),
                 ),
                 InkWell(
                   onTap: () => scrollTo("experienceKey"),
                   child: Text(
                     "Experience & Education",
-                    style: TextStyle(fontSize: 11),
+                    style: TextStyle(fontSize: 12),
                   ),
                 ),
                 // InkWell(
@@ -232,7 +233,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 // ),
                 InkWell(
                   onTap: () => scrollTo("contactKey"),
-                  child: Text("Contact me", style: TextStyle(fontSize: 11)),
+                  child: Text("Contact me", style: TextStyle(fontSize: 12)),
                 ),
               ],
             ),

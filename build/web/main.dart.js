@@ -49378,12 +49378,12 @@ if(d>768)q.push(new A.cj(B.Gd,A.cv(A.f([A.fi(h.LY(f),3),A.fi(h.LW(f),2)],i),B.aw
 else q.push(A.cL(A.f([h.LY(f),A.bw(g,20,g),h.LW(f)],i),B.T,B.O,B.N,0))
 q.push(h.a4A(f))
 return A.aFj(s,c,A.aYB(A.SE(!0,A.cL(q,B.T,B.O,B.N,0),!0),g),r,h.e)},
-a4E(a){var s,r,q,p,o,n,m,l,k,j,i,h,g=this,f=null,e=g.c
-e.toString
-s=A.b1(e,f,t.w).w.a.a
+a4E(a){var s,r,q,p,o,n,m,l,k,j,i=this,h=null,g=i.c
+g.toString
+s=A.b1(g,h,t.w).w.a.a
 r=s>655&&s<=768
 q=s<=655
-e=q?15:30
+g=q?15:30
 p=a.ch
 if(p==null)p=a.z
 o=A.c3(100)
@@ -49392,23 +49392,23 @@ if(n==null)n=B.D
 n=A.f([new A.c4(0,B.aM,A.aB(50,n.C()>>>16&255,n.C()>>>8&255,n.C()&255),new A.k(0,5),20)],t.V)
 m=t.p
 l=A.f([],m)
-if(q)l.push(new A.dK(new A.aPs(a),f))
-k=a.ax
-j=k==null
-i=j?a.y:k
-if(q)h=13
-else h=r?14:16
-l.push(A.az("Anil S. Yadav",f,f,f,A.bA(f,f,i,f,f,f,f,f,f,f,f,h,f,f,B.aD,f,f,!0,f,f,f,f,f,f,f,f),f,f))
-if(!q){i=s>768?20:5
-l.push(A.cv(A.f([A.fQ(!1,f,!0,A.az("Home",f,f,f,A.bA(f,f,f,f,f,f,f,f,f,f,f,11,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,!0,f,f,f,f,f,f,f,new A.aPt(g),f,f,f,f,f,f),A.fQ(!1,f,!0,A.az("Skills",f,f,f,A.bA(f,f,f,f,f,f,f,f,f,f,f,11,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,!0,f,f,f,f,f,f,f,new A.aPu(g),f,f,f,f,f,f),A.fQ(!1,f,!0,A.az("Projects",f,f,f,A.bA(f,f,f,f,f,f,f,f,f,f,f,11,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,!0,f,f,f,f,f,f,f,new A.aPv(g),f,f,f,f,f,f),A.fQ(!1,f,!0,A.az("Experience & Education",f,f,f,A.bA(f,f,f,f,f,f,f,f,f,f,f,11,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,!0,f,f,f,f,f,f,f,new A.aPw(g),f,f,f,f,f,f),A.fQ(!1,f,!0,A.az("Contact me",f,f,f,A.bA(f,f,f,f,f,f,f,f,f,f,f,11,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,!0,f,f,f,f,f,f,f,new A.aPx(g),f,f,f,f,f,f)],m),B.T,B.O,B.N,i))}m=j?a.y:k
-if(j)k=a.y
-if(q)j=new A.b_(new A.a9(10,0,10,0),t.WY)
-else j=r?new A.b_(new A.a9(5,0,5,0),t.WY):f
-k=A.Oq(f,f,f,f,f,f,f,f,new A.b_(m,t.rc),f,f,f,f,f,f,f,j,f,new A.b_(new A.cC(A.c3(20),B.J),t._o),new A.b_(new A.aT(k,1,B.M,-1),t.Is),f,f,f,f,f)
-if(q)m=10
-else m=r?11:14
-l.push(A.Vv(A.az("Download Resume",f,f,f,A.bA(f,f,f,f,f,f,f,f,f,f,f,m,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),f,f),new A.aPy(g),k))
-return A.cZ(A.cv(l,B.T,B.hY,B.N,0),B.K,f,new A.ca(p,f,f,o,n,f,B.ah),50,f,new A.a9(10,15,10,20),new A.a9(e,0,e,0),1/0)},
+if(q)l.push(new A.dK(new A.aPs(a),h))
+if(s>320){k=a.ax
+if(k==null)k=a.y
+if(q)j=13
+else j=r?14:16
+l.push(A.az("Anil S. Yadav",h,h,h,A.bA(h,h,k,h,h,h,h,h,h,h,h,j,h,h,B.aD,h,h,!0,h,h,h,h,h,h,h,h),h,h))}if(!q){k=s>768?20:5
+l.push(A.cv(A.f([A.fQ(!1,h,!0,A.az("Home",h,h,h,A.bA(h,h,h,h,h,h,h,h,h,h,h,12,h,h,h,h,h,!0,h,h,h,h,h,h,h,h),h,h),h,!0,h,h,h,h,h,h,h,new A.aPt(i),h,h,h,h,h,h),A.fQ(!1,h,!0,A.az("Skills",h,h,h,A.bA(h,h,h,h,h,h,h,h,h,h,h,12,h,h,h,h,h,!0,h,h,h,h,h,h,h,h),h,h),h,!0,h,h,h,h,h,h,h,new A.aPu(i),h,h,h,h,h,h),A.fQ(!1,h,!0,A.az("Projects",h,h,h,A.bA(h,h,h,h,h,h,h,h,h,h,h,12,h,h,h,h,h,!0,h,h,h,h,h,h,h,h),h,h),h,!0,h,h,h,h,h,h,h,new A.aPv(i),h,h,h,h,h,h),A.fQ(!1,h,!0,A.az("Experience & Education",h,h,h,A.bA(h,h,h,h,h,h,h,h,h,h,h,12,h,h,h,h,h,!0,h,h,h,h,h,h,h,h),h,h),h,!0,h,h,h,h,h,h,h,new A.aPw(i),h,h,h,h,h,h),A.fQ(!1,h,!0,A.az("Contact me",h,h,h,A.bA(h,h,h,h,h,h,h,h,h,h,h,12,h,h,h,h,h,!0,h,h,h,h,h,h,h,h),h,h),h,!0,h,h,h,h,h,h,h,new A.aPx(i),h,h,h,h,h,h)],m),B.T,B.O,B.N,k))}m=a.ax
+k=m==null
+j=k?a.y:m
+if(k)m=a.y
+if(q)k=new A.b_(new A.a9(10,0,10,0),t.WY)
+else k=r?new A.b_(new A.a9(5,0,5,0),t.WY):h
+m=A.Oq(h,h,h,h,h,h,h,h,new A.b_(j,t.rc),h,h,h,h,h,h,h,k,h,new A.b_(new A.cC(A.c3(20),B.J),t._o),new A.b_(new A.aT(m,1,B.M,-1),t.Is),h,h,h,h,h)
+if(q)k=10
+else k=r?11:14
+l.push(A.Vv(A.az("Download Resume",h,h,h,A.bA(h,h,h,h,h,h,h,h,h,h,h,k,h,h,h,h,h,!0,h,h,h,h,h,h,h,h),h,h),new A.aPy(i),m))
+return A.cZ(A.cv(l,B.T,B.hY,B.N,0),B.K,h,new A.ca(p,h,h,o,n,h,B.ah),50,h,new A.a9(10,15,10,20),new A.a9(g,0,g,0),1/0)},
 a4L(a){var s=this,r=null
 return A.cL(A.f([A.fQ(!1,r,!0,A.az("Home",r,r,r,r,r,r),r,!0,r,r,r,r,r,r,r,new A.aPB(s),r,r,r,r,r,r),A.fQ(!1,r,!0,A.az("Skills",r,r,r,r,r,r),r,!0,r,r,r,r,r,r,r,new A.aPC(s),r,r,r,r,r,r),A.fQ(!1,r,!0,A.az("Projects",r,r,r,r,r,r),r,!0,r,r,r,r,r,r,r,new A.aPD(s),r,r,r,r,r,r),A.fQ(!1,r,!0,A.az("Experience",r,r,r,r,r,r),r,!0,r,r,r,r,r,r,r,new A.aPE(s),r,r,r,r,r,r),A.fQ(!1,r,!0,A.az("Education",r,r,r,r,r,r),r,!0,r,r,r,r,r,r,r,new A.aPF(s),r,r,r,r,r,r),A.fQ(!1,r,!0,A.az("Contact me",r,r,r,r,r,r),r,!0,r,r,r,r,r,r,r,new A.aPG(s),r,r,r,r,r,r),A.ata(r,r,r,r)],t.p),B.aw,B.O,B.N,20)},
 a4G(a){var s,r,q,p,o,n,m,l,k=null,j=A.c3(20)

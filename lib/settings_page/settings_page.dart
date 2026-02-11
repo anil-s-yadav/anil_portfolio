@@ -534,7 +534,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               // style: ButtonStyle(),
             );
-          }).toList(),
+          }),
         ],
       ),
     );
@@ -601,7 +601,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         playUrl: prPlayUrlCtlr.text,
                         iosUrl: prIOSUrlCtlr.text,
                       ),
-                      prj!.id,
+                      prj.id,
                     );
                   } else {
                     res = await EditData().addProject(

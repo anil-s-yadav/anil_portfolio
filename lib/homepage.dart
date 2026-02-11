@@ -1218,7 +1218,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(image, height: 40),
+                child: Image.network(image, height: 45),
               ),
               Expanded(
                 child: Text(
@@ -1249,11 +1249,12 @@ class _MyHomePageState extends State<MyHomePage> {
               spacing: iosUrl.isNotEmpty ? 10 : 4,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                OutlinedButton.icon(
-                  onPressed: () => _launchUrl(playurl),
-                  label: Text("Play Store"),
-                  icon: Image.asset("lib/assets/playstore.png", scale: 3.2),
-                ),
+                if (playurl.isNotEmpty)
+                  OutlinedButton.icon(
+                    onPressed: () => _launchUrl(playurl),
+                    label: Text("Play Store"),
+                    icon: Image.asset("lib/assets/playstore.png", scale: 3.2),
+                  ),
                 if (iosUrl.isNotEmpty)
                   OutlinedButton.icon(
                     onPressed: () => _launchUrl(iosUrl),
@@ -1274,7 +1275,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   // style: ButtonStyle(
                   //   textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12)),
                   // ),
-                  child: Text("Read more"),
+                  child: Text("View"),
                 ),
               ],
             ),

@@ -1,6 +1,5 @@
 import 'package:anil_portfolio/firebase_options.dart';
 import 'package:anil_portfolio/homepage.dart';
-import 'package:anil_portfolio/settings_page/settings_page.dart';
 import 'package:anil_portfolio/theme/theme.dart';
 import 'package:anil_portfolio/theme/util.dart';
 import 'package:firebase_core/firebase_core.dart';

@@ -1,1 +1,39 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"anil-portfolio-388df","appId":"1:1086458151397:android:52594f945898b8faa12f0c","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"anil-portfolio-388df","configurations":{"android":"1:1086458151397:android:52594f945898b8faa12f0c","ios":"1:1086458151397:ios:c1193702c85291e5a12f0c","web":"1:1086458151397:web:4bb6ae13358bf0e6a12f0c"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "anil-portfolio-388df",
+          "appId": "1:1086458151397:android:52594f945898b8faa12f0c",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "anil-portfolio-388df",
+          "configurations": {
+            "android": "1:1086458151397:android:52594f945898b8faa12f0c",
+            "ios": "1:1086458151397:ios:c1193702c85291e5a12f0c",
+            "web": "1:1086458151397:web:4bb6ae13358bf0e6a12f0c"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "database": "(default)",
+    "location": "nam5",
+    "rules": "firebase.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

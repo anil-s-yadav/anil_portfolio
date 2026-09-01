@@ -124,6 +124,7 @@ class _LoginState extends State<LoginPage> {
                             );
 
                             if (isLoggedIn) {
+                              if (!mounted) return;
                               // Navigate to Home
                               Navigator.pushReplacement(
                                 context,
@@ -132,6 +133,7 @@ class _LoginState extends State<LoginPage> {
                                 ),
                               );
                             } else {
+                              if (!mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text("Invalid mobile or password"),

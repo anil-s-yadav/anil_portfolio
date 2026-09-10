@@ -69,14 +69,18 @@ class Experience {
   });
 
   factory Experience.fromFirestore(Map<String, dynamic> data, String id) {
+    List<String> parsedDesc = [];
+    if (data['desc'] is List) {
+      parsedDesc = (data['desc'] as List).map((e) => e.toString()).toList();
+    } else if (data['desc'] is String && (data['desc'] as String).isNotEmpty) {
+      parsedDesc = (data['desc'] as String).split('\n').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
+    }
     return Experience(
       id: id,
       company: data['company']?.toString() ?? '',
       title: data['title']?.toString() ?? '',
       time: data['time']?.toString() ?? '',
-      desc: (data['desc'] as List<dynamic>? ?? [])
-          .map((e) => e.toString())
-          .toList(),
+      desc: parsedDesc,
       order: (data['order'] as num?)?.toInt() ?? 0,
     );
   }
@@ -100,12 +104,18 @@ class Education {
   });
 
   factory Education.fromFirestore(Map<String, dynamic> data, String id) {
+    String parsedDesc = '';
+    if (data['desc'] is List) {
+      parsedDesc = (data['desc'] as List).map((e) => e.toString()).join('\n');
+    } else {
+      parsedDesc = data['desc']?.toString() ?? '';
+    }
     return Education(
       id: id,
       institution: data['institution']?.toString() ?? '',
       degree: data['degree']?.toString() ?? '',
       time: data['time']?.toString() ?? '',
-      desc: data['desc']?.toString() ?? '',
+      desc: parsedDesc,
       order: (data['order'] as num?)?.toInt() ?? 0,
     );
   }

@@ -98,69 +98,28 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: isMobile ? _buildMobileDrawer(colorScheme) : null,
       body: Stack(
         children: [
-          // Background ambient glow orbs – isolated in own repaint layer
-          RepaintBoundary(
-            child: IgnorePointer(
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: -120,
-                    right: -80,
-                    child: Container(
-                      width: 380,
-                      height: 380,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: const Color(0xFF6366F1).withAlpha(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFF6366F1).withAlpha(30),
-                            blurRadius: 80,
-                            spreadRadius: 40,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 350,
-                    left: -120,
-                    child: Container(
-                      width: 320,
-                      height: 320,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: const Color(0xFF06B6D4).withAlpha(15),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFF06B6D4).withAlpha(22),
-                            blurRadius: 80,
-                            spreadRadius: 35,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 850,
-                    right: -100,
-                    child: Container(
-                      width: 340,
-                      height: 340,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: const Color(0xFFEC4899).withAlpha(14),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFFEC4899).withAlpha(20),
-                            blurRadius: 80,
-                            spreadRadius: 35,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+          // Lightweight ambient background — no BoxShadow, pure color
+          Positioned(
+            top: -60,
+            right: -40,
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFF6366F1).withAlpha(12),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 400,
+            left: -60,
+            child: Container(
+              width: 160,
+              height: 160,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFF06B6D4).withAlpha(8),
               ),
             ),
           ),
@@ -650,7 +609,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isTablet = screenWidth > 650 && screenWidth <= 1000;
 
-    int displayLimit = isDesktop ? 4 : (isTablet ? 3 : 2);
+    int displayLimit = isDesktop ? 6 : (isTablet ? 4 : 3);
     final projectsToShow = data.projects.take(displayLimit).toList();
 
     return Container(
@@ -678,6 +637,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: Icons.layers_rounded,
                 title: "Featured Projects",
                 colorScheme: colorScheme,
+                count: data.projects.length,
               ),
               const Spacer(),
               TextButton.icon(
@@ -694,9 +654,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   );
                 },
-                label: const Text(
-                  "View All",
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                label: Text(
+                  "View All (${data.projects.length})",
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 icon: const Icon(Icons.arrow_forward_rounded, size: 16),
                 style: TextButton.styleFrom(
@@ -837,7 +797,13 @@ class _MyHomePageState extends State<MyHomePage> {
               company: edu.institution,
               title: edu.degree,
               period: edu.time,
-              description: [edu.desc],
+              description:
+                  edu.desc.isNotEmpty
+                      ? edu.desc
+                          .split('\n')
+                          .where((s) => s.trim().isNotEmpty)
+                          .toList()
+                      : [],
               colorScheme: colorScheme,
               isFirst: isFirst,
               isLast: isLast,
@@ -1062,6 +1028,7 @@ class _MyHomePageState extends State<MyHomePage> {
     required IconData icon,
     required String title,
     required ColorScheme colorScheme,
+    int? count,
   }) {
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -1084,6 +1051,25 @@ class _MyHomePageState extends State<MyHomePage> {
             letterSpacing: -0.3,
           ),
         ),
+        if (count != null) ...[
+          const SizedBox(width: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 2),
+            decoration: BoxDecoration(
+              color: colorScheme.primary.withAlpha(25),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: colorScheme.primary.withAlpha(60)),
+            ),
+            child: Text(
+              "$count",
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: colorScheme.primary,
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }

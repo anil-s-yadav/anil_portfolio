@@ -9,12 +9,11 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    // Enable Firestore offline persistence:
-    // On subsequent visits all data loads from IndexedDB at 0ms latency.
     FirebaseFirestore.instance.settings = const Settings(
       persistenceEnabled: true,
       cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
@@ -22,6 +21,7 @@ void main() async {
   } catch (e) {
     debugPrint('Firebase init error: $e');
   }
+
   runApp(const MyApp());
 }
 

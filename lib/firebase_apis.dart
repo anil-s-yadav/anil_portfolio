@@ -98,11 +98,27 @@ class HomeRepository {
         educations: [
           Education(
             id: 'default-edu-1',
-            institution: 'Your College / University',
-            degree: 'B.E. / B.Tech in Computer Science',
-            time: '2020 - 2024',
-            desc: 'Relevant coursework and achievements.',
+            institution: 'Bunts Sangha S. M. Shetty College, Powai',
+            degree: 'B.Sc. - Information Technology',
+            time: '2021 - 2024',
+            desc: 'CGPA - 8.10\nFirst Class with Distinction',
             order: 0,
+          ),
+          Education(
+            id: 'default-edu-2',
+            institution: 'Ramniranjan Jhunjhunwala College, Ghatkopar',
+            degree: 'HSC - 12th Science',
+            time: '2019 - 2021',
+            desc: 'Marks - 78.67%',
+            order: 1,
+          ),
+          Education(
+            id: 'default-edu-3',
+            institution: 'Hindi High School, Ghatkopar',
+            degree: 'SSC - 10th',
+            time: 'Completed in 2019',
+            desc: 'Marks - 84.45%',
+            order: 2,
           ),
         ],
       );
@@ -110,6 +126,13 @@ class HomeRepository {
   Future<HomeData> fetchHomeData({bool forceRefresh = false}) async {
     // Serve from in-memory cache instantly unless forced refresh
     if (!forceRefresh && _HomeCache.hasData) return _HomeCache.cached!;
+    if (forceRefresh) {
+      _HomeCache.invalidate();
+    }
+
+    final options = forceRefresh
+        ? const GetOptions(source: Source.server)
+        : const GetOptions(source: Source.serverAndCache);
 
     try {
       // All 6 queries fire in parallel — no sequential waiting
@@ -117,24 +140,30 @@ class HomeRepository {
         _firestore
             .collection('resume')
             .doc('HP5nbvwB4U74ppRuK57G')
-            .get(const GetOptions(source: Source.serverAndCache)),
+            .get(options)
+            .catchError((_) => _firestore.collection('resume').doc('HP5nbvwB4U74ppRuK57G').get()),
         _firestore
             .collection('about')
             .doc('ZRpjpfQ2Xv2UJrOsVrBO')
-            .get(const GetOptions(source: Source.serverAndCache)),
+            .get(options)
+            .catchError((_) => _firestore.collection('about').doc('ZRpjpfQ2Xv2UJrOsVrBO').get()),
         _firestore
             .collection('skills')
             .doc('SswwVql6AcZXOlGhDaX1')
-            .get(const GetOptions(source: Source.serverAndCache)),
+            .get(options)
+            .catchError((_) => _firestore.collection('skills').doc('SswwVql6AcZXOlGhDaX1').get()),
         _firestore
             .collection('projects')
-            .get(const GetOptions(source: Source.serverAndCache)),
+            .get(options)
+            .catchError((_) => _firestore.collection('projects').get()),
         _firestore
             .collection('experiences')
-            .get(const GetOptions(source: Source.serverAndCache)),
+            .get(options)
+            .catchError((_) => _firestore.collection('experiences').get()),
         _firestore
             .collection('educations')
-            .get(const GetOptions(source: Source.serverAndCache)),
+            .get(options)
+            .catchError((_) => _firestore.collection('educations').get()),
       ]);
 
       final resumeData = (results[0] as DocumentSnapshot).data() as Map<String, dynamic>?;
@@ -225,7 +254,7 @@ class EditData {
   // ----- Resume -----
   Future<bool> updateResumeUrl(String newUrl) async {
     try {
-      await _fs.collection('resume').doc('HP5nbvwB4U74ppRuK57G').update({'url': newUrl});
+      await _fs.collection('resume').doc('HP5nbvwB4U74ppRuK57G').set({'url': newUrl}, SetOptions(merge: true));
       _HomeCache.invalidate();
       return true;
     } catch (e) {
@@ -237,7 +266,7 @@ class EditData {
   // ----- About -----
   Future<bool> updateAbout(String newAbout) async {
     try {
-      await _fs.collection('about').doc('ZRpjpfQ2Xv2UJrOsVrBO').update({'about': newAbout});
+      await _fs.collection('about').doc('ZRpjpfQ2Xv2UJrOsVrBO').set({'about': newAbout}, SetOptions(merge: true));
       _HomeCache.invalidate();
       return true;
     } catch (e) {
@@ -249,7 +278,7 @@ class EditData {
   // ----- Skills -----
   Future<bool> updateSkills(List<String> skills) async {
     try {
-      await _fs.collection('skills').doc('SswwVql6AcZXOlGhDaX1').update({'skills': skills});
+      await _fs.collection('skills').doc('SswwVql6AcZXOlGhDaX1').set({'skills': skills}, SetOptions(merge: true));
       _HomeCache.invalidate();
       return true;
     } catch (e) {
@@ -281,14 +310,26 @@ class EditData {
 
   Future<bool> updateProject(Project project, String id) async {
     try {
-      await _fs.collection('projects').doc(id).update({
-        'title': project.title,
-        'description': project.description,
-        'icon': project.icon,
-        'ios_url': project.iosUrl,
-        'play_url': project.playUrl,
-        'more_url': project.moreUrl,
-      });
+      if (id.startsWith('default')) {
+        await _fs.collection('projects').add({
+          'title': project.title,
+          'description': project.description,
+          'icon': project.icon,
+          'ios_url': project.iosUrl,
+          'play_url': project.playUrl,
+          'more_url': project.moreUrl,
+          'order': project.order,
+        });
+      } else {
+        await _fs.collection('projects').doc(id).set({
+          'title': project.title,
+          'description': project.description,
+          'icon': project.icon,
+          'ios_url': project.iosUrl,
+          'play_url': project.playUrl,
+          'more_url': project.moreUrl,
+        }, SetOptions(merge: true));
+      }
       _HomeCache.invalidate();
       return true;
     } catch (e) {
@@ -299,7 +340,9 @@ class EditData {
 
   Future<bool> deleteProject(String id) async {
     try {
-      await _fs.collection('projects').doc(id).delete();
+      if (!id.startsWith('default')) {
+        await _fs.collection('projects').doc(id).delete();
+      }
       _HomeCache.invalidate();
       return true;
     } catch (e) {
@@ -313,7 +356,10 @@ class EditData {
     try {
       final batch = _fs.batch();
       for (int i = 0; i < orderedIds.length; i++) {
-        batch.update(_fs.collection('projects').doc(orderedIds[i]), {'order': i});
+        final id = orderedIds[i];
+        if (!id.startsWith('default')) {
+          batch.update(_fs.collection('projects').doc(id), {'order': i});
+        }
       }
       await batch.commit();
       _HomeCache.invalidate();
@@ -345,12 +391,22 @@ class EditData {
 
   Future<bool> updateExperience(String docId, Experience exp) async {
     try {
-      await _fs.collection('experiences').doc(docId).update({
-        'company': exp.company,
-        'title': exp.title,
-        'time': exp.time,
-        'desc': exp.desc,
-      });
+      if (docId.startsWith('default')) {
+        await _fs.collection('experiences').add({
+          'company': exp.company,
+          'title': exp.title,
+          'time': exp.time,
+          'desc': exp.desc,
+          'order': exp.order,
+        });
+      } else {
+        await _fs.collection('experiences').doc(docId).set({
+          'company': exp.company,
+          'title': exp.title,
+          'time': exp.time,
+          'desc': exp.desc,
+        }, SetOptions(merge: true));
+      }
       _HomeCache.invalidate();
       return true;
     } catch (e) {
@@ -361,7 +417,9 @@ class EditData {
 
   Future<bool> deleteExperience(String docId) async {
     try {
-      await _fs.collection('experiences').doc(docId).delete();
+      if (!docId.startsWith('default')) {
+        await _fs.collection('experiences').doc(docId).delete();
+      }
       _HomeCache.invalidate();
       return true;
     } catch (e) {
@@ -374,7 +432,10 @@ class EditData {
     try {
       final batch = _fs.batch();
       for (int i = 0; i < orderedIds.length; i++) {
-        batch.update(_fs.collection('experiences').doc(orderedIds[i]), {'order': i});
+        final id = orderedIds[i];
+        if (!id.startsWith('default')) {
+          batch.update(_fs.collection('experiences').doc(id), {'order': i});
+        }
       }
       await batch.commit();
       _HomeCache.invalidate();
@@ -406,12 +467,22 @@ class EditData {
 
   Future<bool> updateEducation(String docId, Education edu) async {
     try {
-      await _fs.collection('educations').doc(docId).update({
-        'institution': edu.institution,
-        'degree': edu.degree,
-        'time': edu.time,
-        'desc': edu.desc,
-      });
+      if (docId.startsWith('default')) {
+        await _fs.collection('educations').add({
+          'institution': edu.institution,
+          'degree': edu.degree,
+          'time': edu.time,
+          'desc': edu.desc,
+          'order': edu.order,
+        });
+      } else {
+        await _fs.collection('educations').doc(docId).set({
+          'institution': edu.institution,
+          'degree': edu.degree,
+          'time': edu.time,
+          'desc': edu.desc,
+        }, SetOptions(merge: true));
+      }
       _HomeCache.invalidate();
       return true;
     } catch (e) {
@@ -422,7 +493,9 @@ class EditData {
 
   Future<bool> deleteEducation(String docId) async {
     try {
-      await _fs.collection('educations').doc(docId).delete();
+      if (!docId.startsWith('default')) {
+        await _fs.collection('educations').doc(docId).delete();
+      }
       _HomeCache.invalidate();
       return true;
     } catch (e) {
@@ -435,7 +508,10 @@ class EditData {
     try {
       final batch = _fs.batch();
       for (int i = 0; i < orderedIds.length; i++) {
-        batch.update(_fs.collection('educations').doc(orderedIds[i]), {'order': i});
+        final id = orderedIds[i];
+        if (!id.startsWith('default')) {
+          batch.update(_fs.collection('educations').doc(id), {'order': i});
+        }
       }
       await batch.commit();
       _HomeCache.invalidate();

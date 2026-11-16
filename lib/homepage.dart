@@ -2,6 +2,7 @@ import 'package:anil_portfolio/all_projects_page.dart' deferred as all_projects;
 import 'package:anil_portfolio/login_page.dart' deferred as login;
 import 'package:anil_portfolio/models.dart';
 import 'package:anil_portfolio/firebase_apis.dart';
+import 'package:anil_portfolio/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -185,42 +186,50 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
 
           // Logo / Brand
-          InkWell(
-            onTap: () => scrollTo('homeKey'),
-            borderRadius: BorderRadius.circular(20),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              child: Row(
-                children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: colorScheme.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Center(
-                      child: Text(
-                        "AY",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13,
+          Flexible(
+            child: InkWell(
+              onTap: () => scrollTo('homeKey'),
+              borderRadius: BorderRadius.circular(20),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: colorScheme.primary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "AY",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    "Anil S. Yadav",
-                    style: TextStyle(
-                      color: colorScheme.onSurface,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                      letterSpacing: 0.2,
-                    ),
-                  ),
-                ],
+                    if (!isMobile || MediaQuery.of(context).size.width > 380) ...[
+                      const SizedBox(width: 10),
+                      Flexible(
+                        child: Text(
+                          "Anil S. Yadav",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: colorScheme.onSurface,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            letterSpacing: 0.2,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -249,11 +258,18 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
 
-          // Download Resume CTA
-          _ModernResumeButton(
-            resumeUrl: data.resume,
-            colorScheme: colorScheme,
-            onTap: () => _launchUrl(data.resume),
+          // Theme Switcher & Download Resume CTA
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _ThemeToggleButton(colorScheme: colorScheme),
+              const SizedBox(width: 8),
+              _ModernResumeButton(
+                resumeUrl: data.resume,
+                colorScheme: colorScheme,
+                onTap: () => _launchUrl(data.resume),
+              ),
+            ],
           ),
         ],
       ),
@@ -293,14 +309,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 const SizedBox(width: 12),
-                Text(
-                  "Anil S. Yadav",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: colorScheme.onSurface,
+                Expanded(
+                  child: Text(
+                    "Anil S. Yadav",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurface,
+                    ),
                   ),
                 ),
+                _ThemeToggleButton(colorScheme: colorScheme),
               ],
             ),
             const SizedBox(height: 24),
@@ -1130,6 +1150,94 @@ class _HoverNavButtonState extends State<_HoverNavButton> {
   }
 }
 
+class _ThemeToggleButton extends StatefulWidget {
+  final ColorScheme colorScheme;
+
+  const _ThemeToggleButton({required this.colorScheme});
+
+  @override
+  State<_ThemeToggleButton> createState() => _ThemeToggleButtonState();
+}
+
+class _ThemeToggleButtonState extends State<_ThemeToggleButton> {
+  bool isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => isHovered = true),
+      onExit: (_) => setState(() => isHovered = false),
+      cursor: SystemMouseCursors.click,
+      child: Tooltip(
+        message: isDark ? "Switch to Light Mode" : "Switch to Dark Mode",
+        child: GestureDetector(
+          onTap: () => toggleTheme(context),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            transform: Matrix4.translationValues(0, isHovered ? -2 : 0, 0),
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: isHovered
+                  ? (isDark
+                      ? const Color(0xFFFBBF24).withAlpha(30)
+                      : widget.colorScheme.primary.withAlpha(25))
+                  : widget.colorScheme.surfaceContainerHighest.withAlpha(120),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: isHovered
+                    ? (isDark
+                        ? const Color(0xFFFBBF24).withAlpha(150)
+                        : widget.colorScheme.primary.withAlpha(150))
+                    : widget.colorScheme.outlineVariant.withAlpha(45),
+                width: 1.2,
+              ),
+              boxShadow: isHovered
+                  ? [
+                      BoxShadow(
+                        color: (isDark
+                                ? const Color(0xFFFBBF24)
+                                : widget.colorScheme.primary)
+                            .withAlpha(70),
+                        blurRadius: 14,
+                        offset: const Offset(0, 3),
+                      )
+                    ]
+                  : [],
+            ),
+            child: Center(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                transitionBuilder: (child, animation) {
+                  return RotationTransition(
+                    turns: animation,
+                    child: ScaleTransition(scale: animation, child: child),
+                  );
+                },
+                child: isDark
+                    ? const Icon(
+                        Icons.wb_sunny_rounded,
+                        key: ValueKey('sun'),
+                        size: 19,
+                        color: Color(0xFFFBBF24),
+                      )
+                    : Icon(
+                        Icons.dark_mode_rounded,
+                        key: const ValueKey('moon'),
+                        size: 19,
+                        color: widget.colorScheme.primary,
+                      ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _ModernResumeButton extends StatefulWidget {
   final String resumeUrl;
   final ColorScheme colorScheme;
@@ -1530,6 +1638,10 @@ class _SoftProjectCardState extends State<_SoftProjectCard> {
                 if (proj.iosUrl.isNotEmpty)
                   _ProjectActionButton(
                     icon: "lib/assets/appstore.png",
+                    iconColor:
+                        colorScheme.brightness == Brightness.dark
+                            ? Colors.white
+                            : null,
                     label: "App Store",
                     colorScheme: colorScheme,
                     onTap: () => widget.onLaunch(proj.iosUrl),
@@ -1553,6 +1665,7 @@ class _SoftProjectCardState extends State<_SoftProjectCard> {
 class _ProjectActionButton extends StatefulWidget {
   final String? icon;
   final IconData? iconData;
+  final Color? iconColor;
   final String label;
   final ColorScheme colorScheme;
   final VoidCallback onTap;
@@ -1560,6 +1673,7 @@ class _ProjectActionButton extends StatefulWidget {
   const _ProjectActionButton({
     this.icon,
     this.iconData,
+    this.iconColor,
     required this.label,
     required this.colorScheme,
     required this.onTap,
@@ -1574,6 +1688,13 @@ class _ProjectActionButtonState extends State<_ProjectActionButton> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = widget.colorScheme.brightness == Brightness.dark;
+    final Color? effectiveIconColor =
+        widget.iconColor ??
+        (isDark && widget.icon == "lib/assets/appstore.png"
+            ? Colors.white
+            : null);
+
     return MouseRegion(
       onEnter: (_) => setState(() => isHovered = true),
       onExit: (_) => setState(() => isHovered = false),
@@ -1603,6 +1724,7 @@ class _ProjectActionButtonState extends State<_ProjectActionButton> {
                   widget.icon!,
                   width: 14,
                   height: 14,
+                  color: effectiveIconColor,
                   errorBuilder:
                       (_, __, ___) => Icon(
                         Icons.link,

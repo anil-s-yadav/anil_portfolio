@@ -271,6 +271,10 @@ class _SoftProjectCardState extends State<_SoftProjectCard> {
                 if (proj.iosUrl.isNotEmpty)
                   _ProjectActionButton(
                     icon: "lib/assets/appstore.png",
+                    iconColor:
+                        colorScheme.brightness == Brightness.dark
+                            ? Colors.white
+                            : null,
                     label: "App Store",
                     colorScheme: colorScheme,
                     onTap: () => widget.onLaunch(proj.iosUrl),
@@ -294,6 +298,7 @@ class _SoftProjectCardState extends State<_SoftProjectCard> {
 class _ProjectActionButton extends StatefulWidget {
   final String? icon;
   final IconData? iconData;
+  final Color? iconColor;
   final String label;
   final ColorScheme colorScheme;
   final VoidCallback onTap;
@@ -301,6 +306,7 @@ class _ProjectActionButton extends StatefulWidget {
   const _ProjectActionButton({
     this.icon,
     this.iconData,
+    this.iconColor,
     required this.label,
     required this.colorScheme,
     required this.onTap,
@@ -315,6 +321,13 @@ class _ProjectActionButtonState extends State<_ProjectActionButton> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = widget.colorScheme.brightness == Brightness.dark;
+    final Color? effectiveIconColor =
+        widget.iconColor ??
+        (isDark && widget.icon == "lib/assets/appstore.png"
+            ? Colors.white
+            : null);
+
     return MouseRegion(
       onEnter: (_) => setState(() => isHovered = true),
       onExit: (_) => setState(() => isHovered = false),
@@ -344,6 +357,7 @@ class _ProjectActionButtonState extends State<_ProjectActionButton> {
                   widget.icon!,
                   width: 14,
                   height: 14,
+                  color: effectiveIconColor,
                   errorBuilder:
                       (_, __, ___) => Icon(
                         Icons.link,

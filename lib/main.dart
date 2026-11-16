@@ -49,18 +49,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = View.of(context).platformDispatcher.platformBrightness;
     final TextTheme textTheme = createTextTheme(context, "Poppins", "Poppins");
     final MaterialTheme theme = MaterialTheme(textTheme);
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Anil S. Yadav | Portfolio',
-      scrollBehavior: const AppScrollBehavior(),
-      theme: brightness == Brightness.light
-          ? theme.lightMediumContrast()
-          : theme.darkMediumContrast(),
-      home: const MyHomePage(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeModeNotifier,
+      builder: (context, currentThemeMode, _) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Anil S. Yadav | Portfolio',
+          scrollBehavior: const AppScrollBehavior(),
+          theme: theme.lightMediumContrast(),
+          darkTheme: theme.darkMediumContrast(),
+          themeMode: currentThemeMode,
+          home: const MyHomePage(),
+        );
+      },
     );
   }
 }

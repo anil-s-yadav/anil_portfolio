@@ -1,5 +1,13 @@
 import "package:flutter/material.dart";
 
+final ValueNotifier<ThemeMode> themeModeNotifier =
+    ValueNotifier<ThemeMode>(ThemeMode.system);
+
+void toggleTheme(BuildContext context) {
+  final isDark = Theme.of(context).brightness == Brightness.dark;
+  themeModeNotifier.value = isDark ? ThemeMode.light : ThemeMode.dark;
+}
+
 class MaterialTheme {
   final TextTheme textTheme;
 

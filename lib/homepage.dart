@@ -213,7 +213,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
-                    if (!isMobile || MediaQuery.of(context).size.width > 380) ...[
+                    if (!isMobile ||
+                        MediaQuery.of(context).size.width > 380) ...[
                       const SizedBox(width: 10),
                       Flexible(
                         child: Text(
@@ -1180,32 +1181,37 @@ class _ThemeToggleButtonState extends State<_ThemeToggleButton> {
             width: 38,
             height: 38,
             decoration: BoxDecoration(
-              color: isHovered
-                  ? (isDark
-                      ? const Color(0xFFFBBF24).withAlpha(30)
-                      : widget.colorScheme.primary.withAlpha(25))
-                  : widget.colorScheme.surfaceContainerHighest.withAlpha(120),
+              color:
+                  isHovered
+                      ? (isDark
+                          ? const Color(0xFFFBBF24).withAlpha(30)
+                          : widget.colorScheme.primary.withAlpha(25))
+                      : widget.colorScheme.surfaceContainerHighest.withAlpha(
+                        120,
+                      ),
               shape: BoxShape.circle,
               border: Border.all(
-                color: isHovered
-                    ? (isDark
-                        ? const Color(0xFFFBBF24).withAlpha(150)
-                        : widget.colorScheme.primary.withAlpha(150))
-                    : widget.colorScheme.outlineVariant.withAlpha(45),
+                color:
+                    isHovered
+                        ? (isDark
+                            ? const Color(0xFFFBBF24).withAlpha(150)
+                            : widget.colorScheme.primary.withAlpha(150))
+                        : widget.colorScheme.outlineVariant.withAlpha(45),
                 width: 1.2,
               ),
-              boxShadow: isHovered
-                  ? [
-                      BoxShadow(
-                        color: (isDark
-                                ? const Color(0xFFFBBF24)
-                                : widget.colorScheme.primary)
-                            .withAlpha(70),
-                        blurRadius: 14,
-                        offset: const Offset(0, 3),
-                      )
-                    ]
-                  : [],
+              boxShadow:
+                  isHovered
+                      ? [
+                        BoxShadow(
+                          color: (isDark
+                                  ? const Color(0xFFFBBF24)
+                                  : widget.colorScheme.primary)
+                              .withAlpha(70),
+                          blurRadius: 14,
+                          offset: const Offset(0, 3),
+                        ),
+                      ]
+                      : [],
             ),
             child: Center(
               child: AnimatedSwitcher(
@@ -1216,19 +1222,20 @@ class _ThemeToggleButtonState extends State<_ThemeToggleButton> {
                     child: ScaleTransition(scale: animation, child: child),
                   );
                 },
-                child: isDark
-                    ? const Icon(
-                        Icons.wb_sunny_rounded,
-                        key: ValueKey('sun'),
-                        size: 19,
-                        color: Color(0xFFFBBF24),
-                      )
-                    : Icon(
-                        Icons.dark_mode_rounded,
-                        key: const ValueKey('moon'),
-                        size: 19,
-                        color: widget.colorScheme.primary,
-                      ),
+                child:
+                    isDark
+                        ? const Icon(
+                          Icons.wb_sunny_rounded,
+                          key: ValueKey('sun'),
+                          size: 19,
+                          color: Color(0xFFFBBF24),
+                        )
+                        : Icon(
+                          Icons.dark_mode_rounded,
+                          key: const ValueKey('moon'),
+                          size: 19,
+                          color: widget.colorScheme.primary,
+                        ),
               ),
             ),
           ),
@@ -1409,19 +1416,25 @@ Color _getSkillColor(String skill) {
   if (s.contains('flutter')) return const Color(0xFF0284C7); // Sky Cyan
   if (s.contains('dart')) return const Color(0xFF3B82F6); // Blue
   if (s.contains('firebase')) return const Color(0xFFF59E0B); // Amber
-  if (s.contains('rest') || s.contains('api'))
+  if (s.contains('rest') || s.contains('api')) {
     return const Color(0xFF10B981); // Emerald
-  if (s.contains('bloc') || s.contains('provider') || s.contains('state'))
+  }
+  if (s.contains('bloc') || s.contains('provider') || s.contains('state')) {
     return const Color(0xFF8B5CF6); // Purple
+  }
   if (s.contains('git')) return const Color(0xFFEF4444); // Crimson
-  if (s.contains('android') || s.contains('ios'))
+  if (s.contains('android') || s.contains('ios')) {
     return const Color(0xFF06B6D4); // Aqua
-  if (s.contains('ui') || s.contains('ux') || s.contains('design'))
+  }
+  if (s.contains('ui') || s.contains('ux') || s.contains('design')) {
     return const Color(0xFFEC4899); // Neon Pink
-  if (s.contains('architecture') || s.contains('clean'))
+  }
+  if (s.contains('architecture') || s.contains('clean')) {
     return const Color(0xFF6366F1); // Indigo
-  if (s.contains('web') || s.contains('optimization'))
+  }
+  if (s.contains('web') || s.contains('optimization')) {
     return const Color(0xFF14B8A6); // Mint
+  }
   return const Color(0xFF818CF8);
 }
 

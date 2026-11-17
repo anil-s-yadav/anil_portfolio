@@ -15,6 +15,13 @@
     <link rel="preconnect" href="https://firestore.googleapis.com" />
     <link rel="preconnect" href="https://firebase.googleapis.com" />
 
+    <!-- High-priority preloads for instant parallel download -->
+    <link rel="preload" href="flutter_bootstrap.js?v=2" as="script" />
+    <link rel="preload" href="main.dart.wasm" as="fetch" crossorigin="anonymous" />
+    <link rel="preload" href="canvaskit/skwasm.wasm" as="fetch" crossorigin="anonymous" />
+    <link rel="modulepreload" href="main.dart.mjs" />
+    <link rel="modulepreload" href="canvaskit/skwasm.js" />
+
     <!-- Poppins font — non-render-blocking with font-display:swap -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
       rel="stylesheet" media="print" onload="this.media='all'" />
@@ -78,24 +85,13 @@
     <div id="loading-bar"></div>
     <script src="flutter_bootstrap.js?v=2" async></script>
     <script>
-      (function() {
-        var isBlink = navigator.vendor === 'Google Inc.' || navigator.userAgent.includes('Edg/');
-        var supportsWasm = (function() {
-          try {
-            return typeof WebAssembly === 'object' && WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,0,0,1,5,1,95,1,120,0]));
-          } catch(e) { return false; }
-        })();
-        if (isBlink && supportsWasm) {
-          ['main.dart.wasm', 'canvaskit/skwasm.wasm'].forEach(function(url) {
-            var link = document.createElement('link');
-            link.rel = 'preload';
-            link.as = 'fetch';
-            link.crossOrigin = 'anonymous';
-            link.href = url;
-            document.head.appendChild(link);
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('sw.js').catch(function(err) {
+            console.debug('SW reg failed', err);
           });
-        }
-      })();
+        });
+      }
     </script>
   </body>
 </html>

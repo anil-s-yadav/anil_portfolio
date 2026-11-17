@@ -31,11 +31,15 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "headers": [
       {
-        "source": "flutter_bootstrap.js*",
+        "source": "sw.js",
         "headers": [
           {
             "key": "Cache-Control",
             "value": "no-cache, no-store, must-revalidate"
+          },
+          {
+            "key": "Service-Worker-Allowed",
+            "value": "/"
           }
         ]
       },
@@ -44,7 +48,16 @@
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "no-cache, no-store, must-revalidate"
+            "value": "public, max-age=0, must-revalidate, stale-while-revalidate=86400"
+          }
+        ]
+      },
+      {
+        "source": "flutter_bootstrap.js*",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=0, must-revalidate, stale-while-revalidate=86400"
           }
         ]
       },

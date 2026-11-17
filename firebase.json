@@ -31,33 +31,11 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "headers": [
       {
-        "source": "**",
-        "headers": [
-          {
-            "key": "Cross-Origin-Opener-Policy",
-            "value": "same-origin"
-          },
-          {
-            "key": "Cross-Origin-Embedder-Policy",
-            "value": "credentialless"
-          }
-        ]
-      },
-      {
-        "source": "**/*.@(js|css|wasm|mjs|png|jpg|jpeg|gif|svg|webp|ico|ttf|woff|woff2)",
+        "source": "flutter_bootstrap.js*",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "max-age=31536000, immutable"
-          }
-        ]
-      },
-      {
-        "source": "flutter_bootstrap.js",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "max-age=31536000, immutable"
+            "value": "no-cache, no-store, must-revalidate"
           }
         ]
       },
@@ -67,6 +45,15 @@
           {
             "key": "Cache-Control",
             "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(js|css|wasm|mjs|png|jpg|jpeg|gif|svg|webp|ico|ttf|woff|woff2)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000, immutable"
           }
         ]
       }

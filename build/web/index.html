@@ -44,71 +44,10 @@
       }
       @media (prefers-color-scheme: light) {
         body { background-color: #f8fafc; }
-        #loader .spinner { border-top-color: #4f46e5; }
-        #loader .loader-name { color: #0f172a; }
-        #loader .loader-sub { color: #64748b; }
-      }
-      #loader {
-        position: fixed;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 100;
-        gap: 20px;
-        transition: opacity 0.3s ease;
-      }
-      .spinner {
-        width: 36px;
-        height: 36px;
-        border: 3px solid rgba(129, 140, 248, 0.15);
-        border-top: 3px solid #818cf8;
-        border-radius: 50%;
-        animation: spin 0.7s linear infinite;
-      }
-      @keyframes spin { to { transform: rotate(360deg); } }
-      .loader-name {
-        font-family: 'Poppins', sans-serif;
-        font-size: 18px;
-        font-weight: 700;
-        color: #f8fafc;
-        letter-spacing: -0.3px;
-      }
-      .loader-sub {
-        font-family: 'Poppins', sans-serif;
-        font-size: 12px;
-        color: #94a3b8;
-        margin-top: -14px;
       }
     </style>
   </head>
   <body>
-    <!-- Minimal professional loader — disappears when Flutter renders -->
-    <div id="loader">
-      <div class="loader-name">Anil S. Yadav</div>
-      <div class="loader-sub">Flutter Developer</div>
-      <div class="spinner"></div>
-    </div>
-
-    <script>
-      // Fallback: If flutter-view is attached to DOM, remove loader
-      var observer = new MutationObserver(function() {
-        if (document.querySelector('flutter-view')) {
-          var loader = document.getElementById('loader');
-          if (loader) {
-            loader.style.transition = 'opacity 0.3s ease';
-            loader.style.opacity = '0';
-            setTimeout(function() {
-              if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
-            }, 300);
-            observer.disconnect();
-          }
-        }
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
-    </script>
-
     <script src="flutter_bootstrap.js" async></script>
 
     <!-- High-priority preloads for instant parallel download -->

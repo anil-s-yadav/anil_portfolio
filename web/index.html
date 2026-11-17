@@ -93,21 +93,21 @@
     </div>
 
     <script>
-      // Remove loader as soon as Flutter renders its first frame
-      window.addEventListener('flutter-first-frame', function() {
-        var loader = document.getElementById('loader');
-        if (!loader) return;
-        loader.style.opacity = '0';
-        setTimeout(function() { loader.remove(); }, 300);
-      });
-      // Safety fallback
-      setTimeout(function() {
-        var loader = document.getElementById('loader');
-        if (loader) {
-          loader.style.opacity = '0';
-          setTimeout(function() { loader.remove(); }, 300);
+      // Fallback: If flutter-view is attached to DOM, remove loader
+      var observer = new MutationObserver(function() {
+        if (document.querySelector('flutter-view')) {
+          var loader = document.getElementById('loader');
+          if (loader) {
+            loader.style.transition = 'opacity 0.3s ease';
+            loader.style.opacity = '0';
+            setTimeout(function() {
+              if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+            }, 300);
+            observer.disconnect();
+          }
         }
-      }, 8000);
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
     </script>
 
     <script src="flutter_bootstrap.js" async></script>

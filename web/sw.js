@@ -1,8 +1,8 @@
-const CACHE_NAME = 'anil-portfolio-swr-v2';
+const CACHE_NAME = 'anil-portfolio-swr-v3';
 
-// Critical core assets to pre-cache immediately for 0ms instant startup
+// Core shell assets to precache immediately for 0ms instant startup
 const PRECACHE_ASSETS = [
-  '/',
+  './',
   'index.html',
   'flutter_bootstrap.js?v=2',
   'main.dart.wasm',
@@ -10,8 +10,7 @@ const PRECACHE_ASSETS = [
   'canvaskit/skwasm.js',
   'main.dart.mjs',
   'manifest.json',
-  'favicon.ico',
-  'icons/Icon-192.png'
+  'favicon.ico'
 ];
 
 self.addEventListener('install', (event) => {
@@ -20,7 +19,7 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME).then((cache) => {
       return Promise.allSettled(
         PRECACHE_ASSETS.map((url) =>
-          cache.add(new Request(url, { cache: 'reload' })).catch((err) => {
+          cache.add(url).catch((err) => {
             console.debug('Precache skipped for', url, err);
           })
         )
@@ -61,7 +60,7 @@ self.addEventListener('fetch', (event) => {
 
       // Background revalidation
       const fetchPromise = fetch(req).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200 && networkResponse.type !== 'opaque') {
+        if (networkResponse && (networkResponse.status === 200 || networkResponse.type === 'opaque')) {
           cache.put(req, networkResponse.clone());
         }
         return networkResponse;

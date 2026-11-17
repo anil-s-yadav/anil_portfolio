@@ -86,10 +86,8 @@
     <script src="flutter_bootstrap.js?v=2" async></script>
     <script>
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('sw.js').catch(function(err) {
-            console.debug('SW reg failed', err);
-          });
+        navigator.serviceWorker.register('sw.js', { scope: './' }).catch(function(err) {
+          console.warn('SW reg failed', err);
         });
       }
     </script>

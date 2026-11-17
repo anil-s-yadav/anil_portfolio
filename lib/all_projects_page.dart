@@ -29,12 +29,13 @@ class _AllProjectsPageState extends State<AllProjectsPage> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth <= 650;
 
-    final filteredProjects =
-        widget.projects.where((p) {
-          final query = searchQuery.toLowerCase();
-          return p.title.toLowerCase().contains(query) ||
-              p.description.toLowerCase().contains(query);
-        }).toList();
+    final String query = searchQuery.trim().toLowerCase();
+    final filteredProjects = query.isEmpty
+        ? widget.projects
+        : widget.projects.where((p) {
+            return p.title.toLowerCase().contains(query) ||
+                p.description.toLowerCase().contains(query);
+          }).toList();
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -123,6 +124,7 @@ class _AllProjectsPageState extends State<AllProjectsPage> {
                         children:
                             filteredProjects.map((proj) {
                               return _SoftProjectCard(
+                                key: ValueKey(proj.id),
                                 project: proj,
                                 colorScheme: colorScheme,
                                 onLaunch: _launchUrl,
@@ -146,6 +148,7 @@ class _SoftProjectCard extends StatefulWidget {
   final Function(String) onLaunch;
 
   const _SoftProjectCard({
+    super.key,
     required this.project,
     required this.colorScheme,
     required this.onLaunch,
@@ -218,6 +221,9 @@ class _SoftProjectCardState extends State<_SoftProjectCard> {
                             ? Image.network(
                               proj.icon,
                               fit: BoxFit.cover,
+                              cacheWidth: 92,
+                              cacheHeight: 92,
+                              filterQuality: FilterQuality.medium,
                               errorBuilder:
                                   (_, __, ___) => Icon(
                                     Icons.apps_rounded,
@@ -357,6 +363,8 @@ class _ProjectActionButtonState extends State<_ProjectActionButton> {
                   widget.icon!,
                   width: 14,
                   height: 14,
+                  cacheWidth: 28,
+                  cacheHeight: 28,
                   color: effectiveIconColor,
                   errorBuilder:
                       (_, __, ___) => Icon(

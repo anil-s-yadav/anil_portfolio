@@ -74,6 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       }
     });
+    // Pre-warm the deferred AllProjects chunk after first frame for instant navigation
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      all_projects.loadLibrary();
+    });
   }
 
   Future<void> _launchUrl(String url) async {
@@ -1400,6 +1404,8 @@ class _SocialButtonState extends State<_SocialButton> {
               widget.iconPath,
               width: 20,
               height: 20,
+              cacheWidth: 40,
+              cacheHeight: 40,
               errorBuilder:
                   (_, __, ___) =>
                       Icon(Icons.link_rounded, size: 20, color: brandColor),
@@ -1598,6 +1604,9 @@ class _SoftProjectCardState extends State<_SoftProjectCard> {
                             ? Image.network(
                               proj.icon,
                               fit: BoxFit.cover,
+                              cacheWidth: 92,
+                              cacheHeight: 92,
+                              filterQuality: FilterQuality.medium,
                               errorBuilder:
                                   (_, __, ___) => Icon(
                                     Icons.apps_rounded,
@@ -1737,6 +1746,8 @@ class _ProjectActionButtonState extends State<_ProjectActionButton> {
                   widget.icon!,
                   width: 14,
                   height: 14,
+                  cacheWidth: 28,
+                  cacheHeight: 28,
                   color: effectiveIconColor,
                   errorBuilder:
                       (_, __, ___) => Icon(

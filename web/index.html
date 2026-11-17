@@ -12,17 +12,16 @@
     <!-- Critical resource hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://firestore.googleapis.com" />
-    <link rel="dns-prefetch" href="https://firebase.googleapis.com" />
+    <link rel="preconnect" href="https://firestore.googleapis.com" />
+    <link rel="preconnect" href="https://firebase.googleapis.com" />
 
-    <!-- Poppins font — only 3 weights -->
-    <link rel="preload" as="style"
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" />
+    <!-- Poppins font — non-render-blocking with font-display:swap -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-      rel="stylesheet" />
-
-    <!-- Preload profile photo -->
-    <link rel="preload" as="image" href="assets/lib/assets/anil.png" />
+      rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+    </noscript>
 
     <!-- iOS / PWA -->
     <meta name="mobile-web-app-capable" content="yes" />
@@ -111,5 +110,11 @@
     </script>
 
     <script src="flutter_bootstrap.js" async></script>
+
+    <!-- High-priority preloads for instant parallel download -->
+    <link rel="preload" href="flutter_bootstrap.js" as="script" />
+    <link rel="preload" href="main.dart.wasm" as="fetch" crossorigin="anonymous" />
+    <link rel="preload" href="canvaskit/skwasm.wasm" as="fetch" crossorigin="anonymous" />
+    <link rel="modulepreload" href="main.dart.mjs" />
   </body>
 </html>
